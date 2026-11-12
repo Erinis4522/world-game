@@ -22,7 +22,7 @@ var _base_glow: MeshInstance3D
 var _base_flash := -10.0
 var now := 0.0
 
-const CAM_OFFSET := Vector3(0, 17.0, 12.5)
+const CAM_OFFSET := Vector3(0, 15.5, 11.0)
 var _far_hide := 26.0
 
 
@@ -39,20 +39,25 @@ func _ready() -> void:
 	var env := WorldEnvironment.new()
 	var e := Environment.new()
 	e.background_mode = Environment.BG_COLOR
-	e.background_color = Color("#9cc9e6")
+	e.background_color = Color("#9fd3f0")
 	e.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	e.ambient_light_color = Color("#dfe8f0")
-	e.ambient_light_energy = 0.6
+	e.ambient_light_color = Color("#e4ecf2")
+	e.ambient_light_energy = 0.68
+	e.fog_enabled = false
+	e.fog_light_color = Color("#a8c4cf")
+	e.fog_density = 0.004
+	e.fog_sky_affect = 0.0
 	e.tonemap_mode = Environment.TONE_MAPPER_LINEAR
 	env.environment = e
 	add_child(env)
 	var sun := DirectionalLight3D.new()
-	sun.rotation = Vector3(deg_to_rad(-55), deg_to_rad(-30), 0)
-	sun.light_energy = 1.0
+	sun.rotation = Vector3(deg_to_rad(-50), deg_to_rad(-35), 0)
+	sun.light_color = Color("#fff0d8")
+	sun.light_energy = 1.2
 	sun.shadow_enabled = false
 	add_child(sun)
 	camera = Camera3D.new()
-	camera.fov = 45.0
+	camera.fov = 42.0
 	camera.current = true
 	add_child(camera)
 	_cam_target = Vector3(SvData.base_center().x, 0, SvData.base_center().y)
@@ -85,91 +90,244 @@ func _place_camera(target: Vector3, k: float) -> void:
 
 
 # ---------------- 지형 ----------------
+# 바닥: 구운 텍스처 한 장 (SvGround). 숲·바위·풀: Fantasy Stylized Pack + KayKit을 MultiMesh로, 12칸 묶음마다
+# 따로 만들어 화면 밖 묶음은 그리지 않게 한다. 출현 게이트 둘레는 숲과 큰 바위, 아래는 성벽·성문·마을(KayKit 한 세트).
+# 건물 위치·판정은 data/survival.json 그대로이고, 모습(모델·크기)만 여기서 정한다.
+
+const CHUNK := 12
+# 숲 나무 섞기: [팩, 모델, 비율, 목표 높이(m)]
+const FOREST_MIX := [
+	["TG", "pine1", 0.34, 3.3], ["TG", "pine2", 0.2, 3.9], ["TG", "pine3", 0.14, 3.6],
+	["K", "tree_single_A", 0.16, 2.6], ["K", "tree_single_B", 0.16, 2.4],
+]
+# 출현 게이트 양옆 큰 바위 [모델, x, y, 회전도, 배율]
+const GATE_ROCKS := [
+	["rock_big_B_gray_2", 16.2, -0.8, 20, 0.34], ["rock_big_B_gray_4", 23.9, -0.9, -40, 0.32],
+	["rock_big_B_1", 14.4, -2.2, 0, 0.28], ["rock_big_B_3", 25.8, -2.0, 60, 0.26],
+]
+# data 모델 이름 → 실제로 보일 KayKit 모델·크기 (여러 색으로 밝게). 빈 이름이면 그리지 않음
+const VILLAGE_LOOK := {
+	"building_castle_blue": ["building_castle_blue", 1.7],
+	"building_home_A_blue": ["building_home_A_red", 2.2],
+	"building_home_B_blue": ["building_home_B_yellow", 2.2],
+	"building_windmill_blue": ["building_windmill_blue", 2.2],
+	"building_tavern_blue": ["building_tavern_blue", 2.1],
+	"building_well_blue": ["building_well_blue", 1.9],
+	"building_market_blue": ["building_market_blue", 2.0],
+	"building_tower_A_blue": ["", 0.0],  # 성문 양옆 탑으로 대신함
+}
+# 마을 소품 [모델, x, y, 회전도, 배율] (KayKit)
+const VILLAGE_DECOR := [
+	["barrel", 8.0, 57.6, 0, 2.0], ["crate_A_big", 8.9, 57.9, 20, 1.8], ["sack", 7.4, 58.3, 0, 2.0],
+	["wheelbarrow", 31.6, 57.8, -30, 2.0], ["crate_B_big", 32.6, 58.4, 10, 1.8], ["resource_lumber", 37.2, 58.0, 0, 1.8],
+	["bucket_water", 16.6, 63.0, 0, 2.0], ["tent", 2.6, 58.0, 20, 1.8], ["weaponrack", 24.0, 57.8, 0, 2.0],
+	["trees_A_medium", 1.6, 62.6, 0, 2.0], ["trees_B_medium", 38.4, 62.4, 40, 2.0], ["trees_A_small", 10.0, 63.0, 0, 2.0],
+	["trees_B_small", 30.6, 63.2, 0, 2.0],
+]
+const ROADSIDE_ROCKS := ["rock_small_1", "rock_small_2", "rock_small_3", "rock_small_4", "rock_small_5"]
+const FIELD_ROCKS := ["rock_medium_1", "rock_medium_2", "rock_block_1", "rock_block_3"]
+const BIG_ROCKS := ["rock_big_B_1", "rock_big_B_3", "rock_big_B_gray_2", "rock_big_B_gray_4"]
+const WALL_SCALE := 1.7  # KayKit 성벽 조각(길이 2m)을 같은 비율로 키움 → 한 조각 약 3.4칸
+
+var _scatter_buf: Dictionary = {}  # "팩#모델#묶음" -> [Transform3D]
+
+
+func _item(pk: String, name: String) -> Array:
+	match pk:
+		"TG":
+			return SvModels.green_item(name)
+		"K":
+			return SvModels.kay_item(name)
+		"R":
+			return SvModels.pack_item(SvModels.PACK_ROCKS, name)
+	return SvModels.pack_item(SvModels.PACK_TREES, name)
+
+
+func _scatter(pack: String, item: String, p: Vector2, yaw: float, scl: float) -> void:
+	var ch := Vector2i(floori(p.x / CHUNK), floori(p.y / CHUNK))
+	var key := "%s#%s#%d,%d" % [pack, item, ch.x, ch.y]
+	if not _scatter_buf.has(key):
+		_scatter_buf[key] = []
+	var b := Basis(Vector3.UP, yaw).scaled(Vector3.ONE * scl)
+	_scatter_buf[key].append(Transform3D(b, Vector3(p.x, 0.0, p.y)))
+
+
+func _flush_scatter(root: Node3D) -> void:
+	for key in _scatter_buf.keys():
+		var parts: PackedStringArray = String(key).split("#")
+		var it := _item(parts[0], parts[1])
+		if it[0] == null:
+			continue
+		var list: Array = _scatter_buf[key]
+		var mm := MultiMesh.new()
+		mm.transform_format = MultiMesh.TRANSFORM_3D
+		mm.mesh = it[0]
+		mm.instance_count = list.size()
+		for i in list.size():
+			mm.set_instance_transform(i, (list[i] as Transform3D) * (it[1] as Transform3D))
+		var mmi := MultiMeshInstance3D.new()
+		mmi.multimesh = mm
+		mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		root.add_child(mmi)
+	_scatter_buf.clear()
+
+
+func _pick(mix: Array, h: float) -> Array:
+	var acc := 0.0
+	for m in mix:
+		acc += float(m[2])
+		if h < acc:
+			return m
+	return mix[mix.size() - 1]
+
+
+func _tree_at(mix: Array, p: Vector2, h1: float, h2: float) -> void:
+	var m := _pick(mix, h1)
+	var it := _item(str(m[0]), str(m[1]))
+	var sy: float = (it[2] as Vector3).y
+	if sy <= 0.0:
+		return
+	var s := float(m[3]) / sy * (0.82 + 0.36 * h2)
+	_scatter(str(m[0]), str(m[1]), p, h2 * TAU * 3.0, s)
+
+
+func _kay(root: Node3D, model: String, p: Vector2, rot_deg: float, scl: float, y := 0.0) -> Node3D:
+	var n := SvModels.prop(model)
+	n.position = w3(p, y)
+	n.rotation.y = deg_to_rad(rot_deg)
+	n.scale = Vector3.ONE * scl
+	root.add_child(n)
+	return n
+
 
 func _build_terrain(root: Node3D, sz: Vector2) -> void:
+	var g := SvGrid.from_config()
+	# 맵 바깥 먼 바닥(숲색) + 구운 바닥 한 장
 	var outer := PlaneMesh.new()
-	outer.size = Vector2(sz.x + 60, sz.y + 60)
-	SvModels.part(root, outer, SvModels.mat(SvModels.c("#5f9a48")), Vector3(sz.x * 0.5, -0.03, sz.y * 0.5))
-	var grass := PlaneMesh.new()
-	grass.size = sz
-	SvModels.part(root, grass, SvModels.mat(SvModels.c("#7dbb5a")), Vector3(sz.x * 0.5, -0.01, sz.y * 0.5))
+	outer.size = Vector2(sz.x + 160, sz.y + 160)
+	SvModels.part(root, outer, SvModels.mat(SvGround.FOREST), Vector3(sz.x * 0.5, -0.03, sz.y * 0.5))
+	root.add_child(SvGround.plane(SvGround.build(g)))
 	var bc := SvData.base_center()
-	var vy := float(SvData.cfg["map"].get("village_y", sz.y))
-	var plaza := PlaneMesh.new()
-	plaza.size = Vector2(sz.x, sz.y - vy)
-	SvModels.part(root, plaza, SvModels.mat(SvModels.c("#c9c1ad")), Vector3(sz.x * 0.5, 0.0, vy + (sz.y - vy) * 0.5))  # 마을 바닥
-	var width := float(SvData.cfg["map"].get("road_width", 3))
 	for r in SvData.roads():
 		var pts := SvData.road_points(r)
-		for layer in [[width + 0.5, SvModels.c("#a5834f"), 0.005], [width, SvModels.c("#d2ad73"), 0.012]]:
-			for i in range(1, pts.size()):
-				var a := pts[i - 1]
-				var b := pts[i]
-				var mid := (a + b) * 0.5
-				var seg := SvModels.part(root, SvModels.box(Vector3(layer[0], 0.01, a.distance_to(b))), SvModels.mat(layer[1]), Vector3(mid.x, layer[2], mid.y))
-				seg.rotation.y = atan2(b.x - a.x, b.y - a.y)
-			for p in pts:
-				SvModels.part(root, SvModels.cyl(layer[0] * 0.5, layer[0] * 0.5, 0.01, 16), SvModels.mat(layer[1]), Vector3(p.x, layer[2], p.y))
 		var inward := (pts[1] - pts[0]).normalized()
 		_gates.append(SvModels.gate(root, w3(pts[0] + inward * 0.6), inward))
-	var g := SvGrid.from_config()
-	var tree_kinds := ["tree_single_A", "tree_single_B", "trees_A_small", "trees_B_small"]
-	var buckets: Dictionary = {}
+	var gate_p: Vector2 = SvData.road_points(SvData.roads()[0])[0]
+	var half := float(SvData.cfg["map"].get("road_width", 4)) * 0.5
+	var vy := int(SvData.cfg["map"].get("village_y", g.h))
+	# 숲 (맵 안 나무 칸)
 	for cell in g.kind.keys():
 		if g.kind[cell] != "tree":
 			continue
-		var h := SvGrid._hash01(cell.x, cell.y, 99)
-		var k: String = tree_kinds[int(h * tree_kinds.size()) % tree_kinds.size()]
-		if not buckets.has(k):
-			buckets[k] = []
-		buckets[k].append(cell)
-	for k in buckets.keys():
-		_multimesh(root, k, buckets[k], 1.9, 0.35)
-	var rocks: Array = []
+		var h1 := SvGrid._hash01(cell.x, cell.y, 99)
+		var h2 := SvGrid._hash01(cell.x, cell.y, 57)
+		if h2 < 0.12:
+			continue  # 군데군데 빈틈
+		var p := Vector2(cell.x + 0.5 + (h1 - 0.5) * 0.5, cell.y + 0.5 + (h2 - 0.5) * 0.5)
+		_tree_at(FOREST_MIX, p, h1, h2)
+	# 맵 바깥 숲 띠 (출현 게이트 둘레도 숲)
+	var ring := 9
+	for j in range(-ring, g.h + ring):
+		for i in range(-ring, g.w + ring):
+			if i >= 0 and i < g.w and j >= 0 and j < g.h:
+				continue
+			var h1 := SvGrid._hash01(i, j, 13)
+			var h2 := SvGrid._hash01(i, j, 71)
+			var p := Vector2(i + 0.5 + (h1 - 0.5) * 0.6, j + 0.5 + (h2 - 0.5) * 0.6)
+			if j < 0 and absf(p.x - gate_p.x) < 3.2 and p.y > -3.0:
+				continue  # 출현 게이트 바로 앞만 비움
+			if h1 < 0.5:
+				_tree_at(FOREST_MIX, p, SvGrid._hash01(i, j, 5), h2)
+			elif h1 > 0.985:
+				_scatter("R", BIG_ROCKS[int(h2 * 4) % 4], p, h2 * TAU, 0.22)
+	# 풀숲·길가 돌·들판 바위
 	for j in g.h:
 		for i in g.w:
 			var cc := Vector2i(i, j)
-			if not g.is_blocked(cc) and not g.is_road(cc) and SvGrid._hash01(i, j, 5) < 0.03:
-				rocks.append(cc)
-	_multimesh(root, "rock_single_A", rocks, 2.2, 0.0)
+			if g.is_blocked(cc) or j >= vy:
+				continue
+			var h1 := SvGrid._hash01(i, j, 211)
+			var h2 := SvGrid._hash01(i, j, 307)
+			var c := Vector2(i + 0.5, j + 0.5)
+			var rd := _road_dist(c)
+			var p := c + Vector2(h1 - 0.5, h2 - 0.5) * 0.7
+			if rd > half - 0.2 and rd < half + 1.2:
+				if h1 < 0.12:
+					_scatter("R", ROADSIDE_ROCKS[int(h2 * 5) % 5], p, h2 * TAU, 0.13 + 0.06 * h2)
+				elif h1 > 0.8:
+					_scatter("T", "grass_green_group", p, h2 * TAU, 0.42 + 0.2 * h2)
+			elif rd >= half + 1.2:
+				if h1 < 0.22:
+					_scatter("T", "grass_green_group" if h2 < 0.75 else "grass_green", p, h2 * TAU, 0.45 + 0.25 * h2)
+				elif h1 > 0.985:
+					_scatter("R", FIELD_ROCKS[int(h2 * 4) % 4], p, h2 * TAU, 0.2 + 0.08 * h2)
+	for m in GATE_ROCKS:
+		_scatter("R", str(m[0]), Vector2(float(m[1]), float(m[2])), deg_to_rad(float(m[3])), float(m[4]))
+	_flush_scatter(root)
+	# 마을 건물 (위치는 data, 모습은 VILLAGE_LOOK)
 	for p in SvData.cfg["map"].get("village_props", []):
-		var n := SvModels.prop(str(p["model"]))
-		n.position = w3(Vector2(float(p["pos"][0]), float(p["pos"][1])))
-		n.rotation.y = deg_to_rad(float(p.get("rot", 0)))
-		n.scale = Vector3.ONE * float(p.get("scale", 2.0))
-		root.add_child(n)
-	for cell in g.kind.keys():
-		if g.kind[cell] == "townwall":
-			var wn := SvModels.prop("wall_straight")
-			wn.position = w3(g.center_of(cell))
-			wn.scale = Vector3(0.55, 1.6, 1.2)
-			root.add_child(wn)
-	_base_glow = SvModels.part(root, SvModels.cyl(3.2, 3.2, 0.02, 32), SvModels.mat(Color(0.35, 0.95, 0.9, 0.35), 0.8, true), Vector3(bc.x, 0.03, bc.y - 1.0))
-	var gate_arch := SvModels.prop("wall_straight_gate")
-	gate_arch.position = w3(bc)
-	gate_arch.scale = Vector3(1.6, 1.8, 1.4)
-	root.add_child(gate_arch)
+		var model := str(p["model"])
+		var look: Array = VILLAGE_LOOK.get(model, [model, float(p.get("scale", 2.0))])
+		if str(look[0]) == "":
+			continue
+		_kay(root, str(look[0]), Vector2(float(p["pos"][0]), float(p["pos"][1])), float(p.get("rot", 0)), float(look[1]))
+	for d in VILLAGE_DECOR:
+		_kay(root, str(d[0]), Vector2(float(d[1]), float(d[2])), float(d[3]), float(d[4]))
+	_build_town_wall(root, g, bc)
+	_base_glow = SvModels.ring(1.9, Color(0.55, 1.0, 0.9, 0.45), 0.1)
+	_base_glow.position = w3(bc - Vector2(0, 1.2), 0.05)
+	root.add_child(_base_glow)
 
 
-func _multimesh(root: Node3D, model: String, cells: Array, scale: float, jitter: float) -> void:
-	var mx: Array = SvModels.first_mesh(model)
-	if mx[0] == null or cells.is_empty():
+func _build_town_wall(root: Node3D, g: SvGrid, bc: Vector2) -> void:
+	## 성벽 줄을 이어진 구간으로 나눠, KayKit 성벽 조각을 원래 비율 그대로(늘이지 않고) 이어 붙인다.
+	## 성문 칸 자리에는 성문 조각과 양옆 탑, 탑 위 깃발.
+	var wy := int(SvData.cfg["map"].get("town_wall_y", -1))
+	if wy < 0:
 		return
-	var mm := MultiMesh.new()
-	mm.transform_format = MultiMesh.TRANSFORM_3D
-	mm.mesh = mx[0]
-	mm.instance_count = cells.size()
-	for i in cells.size():
-		var cell: Vector2i = cells[i]
-		var h1 := SvGrid._hash01(cell.x, cell.y, 31)
-		var h2 := SvGrid._hash01(cell.x, cell.y, 57)
-		var pos := Vector3(cell.x + 0.5 + (h1 - 0.5) * jitter, 0, cell.y + 0.5 + (h2 - 0.5) * jitter)
-		var b := Basis(Vector3.UP, h1 * TAU).scaled(Vector3.ONE * scale * (0.85 + 0.3 * h2))
-		mm.set_instance_transform(i, Transform3D(b, pos) * mx[1])
-	var mmi := MultiMeshInstance3D.new()
-	mmi.multimesh = mm
-	mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	root.add_child(mmi)
+	var runs: Array = []  # [시작 x, 끝 x(포함하지 않음)]
+	var start := -1
+	for i in g.w + 1:
+		# 성벽 줄 위의 옛 탑 자리(building)도 성벽으로 이어서 그림 (판정은 둘 다 막힌 칸)
+		var is_wall: bool = i < g.w and str(g.kind.get(Vector2i(i, wy), "")) in ["townwall", "building"]
+		if is_wall and start < 0:
+			start = i
+		elif not is_wall and start >= 0:
+			runs.append([start, i])
+			start = -1
+	var zc := wy + 0.5
+	var piece := 2.0 * WALL_SCALE
+	for r in runs:
+		var x0 := float(r[0])
+		var x1 := float(r[1])
+		var n := maxi(1, int(round((x1 - x0) / piece)))
+		var s := (x1 - x0) / (2.0 * n)  # 구간 길이에 딱 맞도록 조금만 조정 (모든 축 같은 비율)
+		for k in n:
+			_kay(root, "wall_straight", Vector2(x0 + (k + 0.5) * 2.0 * s, zc), 0.0, s)
+		# 끝에 모서리 탑 (맵 가장자리 쪽)
+		if x0 <= 0.5:
+			_tower(root, Vector2(x0 + 0.6, zc), "flag_yellow")
+		if x1 >= g.w - 0.5:
+			_tower(root, Vector2(x1 - 0.6, zc), "flag_yellow")
+	# 성문 + 양옆 탑
+	var gx := bc.x
+	_kay(root, "wall_straight_gate", Vector2(gx, zc), 0.0, WALL_SCALE)
+	_tower(root, Vector2(gx - WALL_SCALE - 0.8, zc), "flag_red")
+	_tower(root, Vector2(gx + WALL_SCALE + 0.8, zc), "flag_red")
+
+
+func _tower(root: Node3D, p: Vector2, flag: String) -> void:
+	_kay(root, "building_tower_A_blue", p, 0.0, WALL_SCALE)
+	_kay(root, flag, p + Vector2(0, 0.05), 90.0, WALL_SCALE * 1.4, 2.19 * WALL_SCALE)
+
+
+func _road_dist(p: Vector2) -> float:
+	var best := 999.0
+	for r in SvData.roads():
+		var pts := SvData.road_points(r)
+		for i in range(1, pts.size()):
+			best = minf(best, Geometry2D.get_closest_point_to_segment(p, pts[i - 1], pts[i]).distance_to(p))
+	return best
 
 
 # ---------------- 매 프레임 ----------------
@@ -207,8 +365,10 @@ func _process(delta: float) -> void:
 		var portal: Node3D = g.get_node("Portal")
 		portal.scale = Vector3(1.0 + 0.04 * sin(now * 3.0), 1.0, 1.0)
 	if _base_glow != null:
-		var fl := clampf(1.0 - (now - _base_flash) / 0.35, 0.0, 1.0)
-		_base_glow.scale = Vector3.ONE * (1.0 + 0.08 * sin(now * 2.0) + 0.15 * fl)
+		var fl := clampf(1.0 - (now - _base_flash) / 0.6, 0.0, 1.0)
+		_base_glow.visible = fl > 0.0  # 성문이 맞을 때만 번쩍
+		var gk := 0.7 + 0.6 * (1.0 - fl)
+		_base_glow.scale = Vector3(gk, 0.15, gk)
 	_update_fx()
 	var s := controller.session if controller != null else null
 	if s == null or controller.phase in [SvController.ATTRACT, SvController.SELECT]:

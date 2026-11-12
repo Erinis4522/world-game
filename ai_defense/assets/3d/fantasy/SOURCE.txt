@@ -1,0 +1,4 @@
+Fantasy Stylized Pack (TreesPack.glb, RocksPack.glb)
+- 프로젝트 담당자가 제공한 에셋 (원본 폴더: FantasyStylizedPack). 원본 폴더에 라이선스 파일이 없음.
+- 사용: 숲 나무(소나무 pine1~3), 풀숲, 바위. 소나무 잎 색은 게임 안에서 팔레트를 초록으로 바꿔 씀(파일 수정 없음).
+- 재배포 조건은 원 제작처에서 확인 필요.

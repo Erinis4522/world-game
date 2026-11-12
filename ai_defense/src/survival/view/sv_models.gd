@@ -154,7 +154,9 @@ static func hero_unit(type: String) -> Unit:
 	var ps := scene(KAY + str(look[0]) + ".glb")
 	var col := Color.from_string(str(SvData.hero(type).get("color", "#ffffff")), Color.WHITE)
 	shadow(u.root, 0.34)
-	var r := ring(0.46, col if type != "PLAYER" else c("#ffd84a"), 0.09 if type == "PLAYER" else 0.06)
+	var team := col if type != "PLAYER" else c("#ffd84a")
+	part(u.root, cyl(0.44, 0.44, 0.01, 20), mat(Color(team.r, team.g, team.b, 0.3), 0.0, true), Vector3(0, 0.02, 0))
+	var r := ring(0.5, team, 0.12 if type == "PLAYER" else 0.09)
 	r.name = "Ring"
 	u.root.add_child(r)
 	if ps == null:
@@ -196,7 +198,8 @@ static func enemy_unit(type: String) -> Unit:
 	var d: Dictionary = SvData.enemy(type)
 	var u := Unit.new()
 	u.root = Node3D.new()
-	shadow(u.root, 0.4 * float(d.get("scale", 0.6)) / 0.6)
+	var er := 0.4 * float(d.get("scale", 0.6)) / 0.6
+	part(u.root, cyl(er, er, 0.01, 12), mat(Color(0.35, 0.02, 0.04, 0.45), 0.0, true), Vector3(0, 0.015, 0))
 	var ps := scene(KAY + "skeletons/" + str(d.get("model", "Skeleton_Minion")) + ".glb")
 	if ps == null:
 		part(u.root, sphere(0.4), mat(c(str(d.get("color", "#48c9bd")))), Vector3(0, 0.4, 0))
@@ -250,6 +253,109 @@ static func first_mesh(name: String) -> Array:
 	return out
 
 
+# ---------------- Fantasy Stylized Pack (사용자 제공 에셋) ----------------
+# 한 파일 안에 모델 수십 개가 나란히 놓여 있으므로, 이름으로 하나를 꺼내
+# '바닥 가운데 = 원점'이 되도록 옮긴 변환을 함께 돌려준다.
+
+const FANTASY := "res://assets/3d/fantasy/"
+const PACK_TREES := FANTASY + "TreesPack.glb"
+const PACK_ROCKS := FANTASY + "RocksPack.glb"
+
+static var _pack_items: Dictionary = {}
+
+
+static func pack_item(pack: String, item: String) -> Array:
+	## [Mesh, 원점 맞춘 Transform3D, 크기 Vector3]. 없으면 [null, IDENTITY, ZERO]
+	var key := pack + "#" + item
+	if _pack_items.has(key):
+		return _pack_items[key]
+	var ps := scene(pack)
+	if ps == null:
+		return [null, Transform3D.IDENTITY, Vector3.ZERO]
+	if not _pack_items.has(pack):
+		# 처음 한 번만 통째로 펼쳐서 모든 모델을 캐시
+		_pack_items[pack] = true
+		var root: Node = ps.instantiate()
+		for mi in root.find_children("*", "MeshInstance3D", true, false):
+			var m := mi as MeshInstance3D
+			var xf := Transform3D.IDENTITY
+			var cur: Node = m
+			while cur != null and cur != root:
+				if cur is Node3D:
+					xf = (cur as Node3D).transform * xf
+				cur = cur.get_parent()
+			var ab := xf * m.get_aabb()
+			var shift := Vector3(-(ab.position.x + ab.size.x * 0.5), -ab.position.y, -(ab.position.z + ab.size.z * 0.5))
+			var mesh := m.mesh
+			if m.material_override != null or m.get_surface_override_material_count() > 0:
+				mesh = m.mesh.duplicate()
+				for si in mesh.get_surface_count():
+					var mt := m.get_active_material(si)
+					if mt != null:
+						mesh.surface_set_material(si, mt)
+			_pack_items[pack + "#" + String(m.name)] = [mesh, Transform3D(Basis.IDENTITY, shift) * xf, ab.size]
+		root.free()
+	if not _pack_items.has(key):
+		push_warning("에셋에 없는 모델: " + key)
+		_pack_items[key] = [null, Transform3D.IDENTITY, Vector3.ZERO]
+	return _pack_items[key]
+
+
+static var _green_mat: Material
+
+
+static func green_item(item: String) -> Array:
+	## 나무 팩의 소나무·자작나무는 잎이 주황(가을)색 칸을 쓴다. 팔레트 그림의 그 칸만 초록으로 칠한
+	## 복사본 재질을 입혀 여름 숲으로 보이게 한다 (원본 파일은 그대로).
+	var key := "green#" + item
+	if _pack_items.has(key):
+		return _pack_items[key]
+	var it := pack_item(PACK_TREES, item)
+	if it[0] == null:
+		return it
+	if _green_mat == null:
+		var src := (it[0] as Mesh).surface_get_material(0)
+		if src is BaseMaterial3D and (src as BaseMaterial3D).albedo_texture != null:
+			var img := (src as BaseMaterial3D).albedo_texture.get_image()
+			if img.is_compressed():
+				img.decompress()
+			img.clear_mipmaps()
+			img.convert(Image.FORMAT_RGBA8)
+			var cw := img.get_width() / 16
+			var top := int(img.get_height() * 0.445)
+			# 칸 번호: [위 색, 아래 색]
+			var cols := {1: [Color("#a6d95c"), Color("#2f7d36")], 3: [Color("#c2e06a"), Color("#4b8f35")]}
+			for ci in cols.keys():
+				for y in top:
+					var k := float(y) / float(top)
+					var cc: Color = (cols[ci][0] as Color).lerp(cols[ci][1], k)
+					for x in range(ci * cw, (ci + 1) * cw):
+						img.set_pixel(x, y, cc)
+			img.generate_mipmaps()
+			var m := (src as BaseMaterial3D).duplicate() as BaseMaterial3D
+			m.albedo_texture = ImageTexture.create_from_image(img)
+			_green_mat = m
+	var mesh: Mesh = (it[0] as Mesh).duplicate()
+	if _green_mat != null:
+		mesh.surface_set_material(0, _green_mat)
+	_pack_items[key] = [mesh, it[1], it[2]]
+	return _pack_items[key]
+
+
+static func pack_node(pack: String, item: String, scl: float) -> Node3D:
+	var it := pack_item(pack, item)
+	var n := Node3D.new()
+	if it[0] == null:
+		return n
+	var mi := MeshInstance3D.new()
+	mi.mesh = it[0]
+	mi.transform = it[1]
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	n.add_child(mi)
+	n.scale = Vector3.ONE * scl
+	return n
+
+
 static func gate(parent: Node3D, pos: Vector3, inward: Vector2) -> Node3D:
 	var n := Node3D.new()
 	n.position = pos
@@ -262,3 +368,17 @@ static func gate(parent: Node3D, pos: Vector3, inward: Vector2) -> Node3D:
 	var portal := part(n, box(Vector3(2.75, 2.4, 0.08)), mat(Color(0.65, 0.25, 1.0, 0.7), 1.8), Vector3(0, 1.25, 0))
 	portal.name = "Portal"
 	return n
+
+
+static func kay_item(name: String) -> Array:
+	## KayKit 마을 팩 모델을 pack_item과 같은 꼴 [Mesh, 변환, 크기]로 (바닥 가운데 원점)
+	var key := "kay#" + name
+	if _pack_items.has(key):
+		return _pack_items[key]
+	var mx := first_mesh(name)
+	if mx[0] == null:
+		return [null, Transform3D.IDENTITY, Vector3.ZERO]
+	var ab: AABB = (mx[1] as Transform3D) * (mx[0] as Mesh).get_aabb()
+	var shift := Vector3(-(ab.position.x + ab.size.x * 0.5), -ab.position.y, -(ab.position.z + ab.size.z * 0.5))
+	_pack_items[key] = [mx[0], Transform3D(Basis.IDENTITY, shift) * (mx[1] as Transform3D), ab.size]
+	return _pack_items[key]
