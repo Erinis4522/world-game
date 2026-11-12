@@ -1,0 +1,21 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS t00_data
+PASS t01_effects
+PASS t02_principle_changes_target
+PASS t03_range_and_retarget
+PASS t04_speech_truth_and_cooldown
+PASS t05_events_once
+PASS t06_gap_and_cancel
+PASS t07_choice_applies_to_one_hero
+PASS t08_recommendation_consistency
+PASS t09_determinism_no_mutation
+PASS t10_controller_flow
+PASS t11_command_once
+PASS t12_hero_art_and_anim
+PASS t13_confirm_flow
+PASS t14_ice_rig
+PASS t15_roster_art
+PASS t16_world_art
+
+결과: 확인 914개 통과, 0개 실패

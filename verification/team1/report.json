@@ -1,0 +1,51 @@
+{
+	"attacks": {
+		"FIRE": 71,
+		"ICE": 112,
+		"LIGHTNING": 25
+	},
+	"enemy_types": [
+		"NORMAL",
+		"FAST",
+		"ARMORED",
+		"BOSS"
+	],
+	"enemy_views": [
+		"NORMAL_1",
+		"NORMAL_0",
+		"NORMAL_2",
+		"FAST_0",
+		"FAST_1",
+		"FAST_2",
+		"ARMORED_0",
+		"ARMORED_1",
+		"FAST_3",
+		"ARMORED_2",
+		"NORMAL_3",
+		"ARMORED_3",
+		"BOSS_1",
+		"BOSS_0",
+		"BOSS_2",
+		"BOSS_3"
+	],
+	"facing": [
+		"ICE_left",
+		"FIRE_left",
+		"FIRE_right",
+		"ICE_right",
+		"LIGHTNING_right"
+	],
+	"outcome": "win",
+	"result_reached": true,
+	"specials": {
+		"FIRE": 23,
+		"ICE": 24,
+		"LIGHTNING": 1
+	},
+	"suggestion_checked": true,
+	"team": [
+		"FIRE",
+		"ICE",
+		"LIGHTNING"
+	]
+}

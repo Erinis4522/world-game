@@ -1,0 +1,460 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: Cannot open file 'res://.godot/imported/NotoSansKR-Regular.otf-4ae8f7324dc2aeada04fca31f5caeaa7.fontdata'.
+   at: load (core/io/resource_format_binary.cpp:1156)
+ERROR: Failed loading resource: res://.godot/imported/NotoSansKR-Regular.otf-4ae8f7324dc2aeada04fca31f5caeaa7.fontdata.
+   at: _load (core/io/resource_loader.cpp:317)
+ERROR: Failed loading resource: res://assets/fonts/NotoSansKR-Regular.otf.
+   at: _load (core/io/resource_loader.cpp:317)
+ERROR: Error loading custom project font 'res://assets/fonts/NotoSansKR-Regular.otf'
+   at: initialize_theme (scene/theme/theme_db.cpp:84)
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started 프로젝트 초기화 (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | 파일 구조 스캔 중...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | 전역 클래스 이름을 불러오는 중...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | GDExtensions 검증 중...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | 오토로드 스크립트를 만드는 중...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | 플러그인을 초기화 중...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | 파일 스캔 시작 중...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | Started 전역 클래스를 등록하는 중... (43 steps)[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | CombatObserver[39m[0m
+[   2% ] [90m[1mupdate_scripts_classes[22m | CrisisDetection[39m[0m
+[   4% ] [90m[1mupdate_scripts_classes[22m | Recommendation[39m[0m
+[   6% ] [90m[1mupdate_scripts_classes[22m | Specialty[39m[0m
+[   9% ] [90m[1mupdate_scripts_classes[22m | SpeechScheduler[39m[0m
+[  11% ] [90m[1mupdate_scripts_classes[22m | Targeting[39m[0m
+[  13% ] [90m[1mupdate_scripts_classes[22m | TextUtil[39m[0m
+[  15% ] [90m[1mupdate_scripts_classes[22m | BattleRunner[39m[0m
+[  18% ] [90m[1mupdate_scripts_classes[22m | BattleSession[39m[0m
+[  20% ] [90m[1mupdate_scripts_classes[22m | GameController[39m[0m
+[  22% ] [90m[1mupdate_scripts_classes[22m | AssetManifest[39m[0m
+[  25% ] [90m[1mupdate_scripts_classes[22m | Entities[39m[0m
+[  27% ] [90m[1mupdate_scripts_classes[22m | GameData[39m[0m
+[  29% ] [90m[1mupdate_scripts_classes[22m | GameEngine[39m[0m
+[  31% ] [90m[1mupdate_scripts_classes[22m | GameState[39m[0m
+[  34% ] [90m[1mupdate_scripts_classes[22m | MapPath[39m[0m
+[  36% ] [90m[1mupdate_scripts_classes[22m | ArenaView[39m[0m
+[  38% ] [90m[1mupdate_scripts_classes[22m | ChibiArt[39m[0m
+[  40% ] [90m[1mupdate_scripts_classes[22m | ControlView[39m[0m
+[  43% ] [90m[1mupdate_scripts_classes[22m | EnemySprite[39m[0m
+[  45% ] [90m[1mupdate_scripts_classes[22m | HeroIcon[39m[0m
+[  47% ] [90m[1mupdate_scripts_classes[22m | HeroPortrait[39m[0m
+[  50% ] [90m[1mupdate_scripts_classes[22m | HeroSprite[39m[0m
+[  52% ] [90m[1mupdate_scripts_classes[22m | IceEffects[39m[0m
+[  54% ] [90m[1mupdate_scripts_classes[22m | MapArt[39m[0m
+[  56% ] [90m[1mupdate_scripts_classes[22m | MapPicker[39m[0m
+[  59% ] [90m[1mupdate_scripts_classes[22m | PlaceholderArt[39m[0m
+[  61% ] [90m[1mupdate_scripts_classes[22m | UiStyle[39m[0m
+[  63% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  65% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  68% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  70% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  72% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  75% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  77% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  79% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  81% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  84% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  86% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  88% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  90% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  93% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  95% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[92m[ DONE ][39m [1mupdate_scripts_classes[22m
+[0m
+[   0% ] [90m[1m_update_scan_actions[22m | Started 액션 스캔 중... (126 steps)[39m[0m
+[   0% ] [90m[1m_update_scan_actions[22m | ice_cast.png[39m[0m
+[   0% ] [90m[1m_update_scan_actions[22m | armored.png[39m[0m
+[   1% ] [90m[1m_update_scan_actions[22m | armored_sheet.png[39m[0m
+[   2% ] [90m[1m_update_scan_actions[22m | boss.png[39m[0m
+[   3% ] [90m[1m_update_scan_actions[22m | boss_sheet.png[39m[0m
+[   3% ] [90m[1m_update_scan_actions[22m | fast.png[39m[0m
+[   4% ] [90m[1m_update_scan_actions[22m | fast_sheet.png[39m[0m
+[   5% ] [90m[1m_update_scan_actions[22m | normal.png[39m[0m
+[   6% ] [90m[1m_update_scan_actions[22m | normal_sheet.png[39m[0m
+[   7% ] [90m[1m_update_scan_actions[22m | NotoSansKR-Regular.otf[39m[0m
+[   7% ] [90m[1m_update_scan_actions[22m | coat_back.png[39m[0m
+[   8% ] [90m[1m_update_scan_actions[22m | forearm_far.png[39m[0m
+[   9% ] [90m[1m_update_scan_actions[22m | forearm_near.png[39m[0m
+[  10% ] [90m[1m_update_scan_actions[22m | hair_back.png[39m[0m
+[  11% ] [90m[1m_update_scan_actions[22m | hair_front.png[39m[0m
+[  11% ] [90m[1m_update_scan_actions[22m | head_face.png[39m[0m
+[  12% ] [90m[1m_update_scan_actions[22m | leg_far.png[39m[0m
+[  13% ] [90m[1m_update_scan_actions[22m | leg_near.png[39m[0m
+[  14% ] [90m[1m_update_scan_actions[22m | torso.png[39m[0m
+[  14% ] [90m[1m_update_scan_actions[22m | upper_arm_far.png[39m[0m
+[  15% ] [90m[1m_update_scan_actions[22m | upper_arm_near.png[39m[0m
+[  16% ] [90m[1m_update_scan_actions[22m | weapon.png[39m[0m
+[  17% ] [90m[1m_update_scan_actions[22m | coat_back.png[39m[0m
+[  18% ] [90m[1m_update_scan_actions[22m | forearm_far.png[39m[0m
+[  18% ] [90m[1m_update_scan_actions[22m | forearm_near.png[39m[0m
+[  19% ] [90m[1m_update_scan_actions[22m | hair_back.png[39m[0m
+[  20% ] [90m[1m_update_scan_actions[22m | hair_front.png[39m[0m
+[  21% ] [90m[1m_update_scan_actions[22m | head_face.png[39m[0m
+[  22% ] [90m[1m_update_scan_actions[22m | leg_far.png[39m[0m
+[  22% ] [90m[1m_update_scan_actions[22m | leg_near.png[39m[0m
+[  23% ] [90m[1m_update_scan_actions[22m | torso.png[39m[0m
+[  24% ] [90m[1m_update_scan_actions[22m | upper_arm_far.png[39m[0m
+[  25% ] [90m[1m_update_scan_actions[22m | upper_arm_near.png[39m[0m
+[  25% ] [90m[1m_update_scan_actions[22m | weapon.png[39m[0m
+[  26% ] [90m[1m_update_scan_actions[22m | coat_back.png[39m[0m
+[  27% ] [90m[1m_update_scan_actions[22m | forearm_far.png[39m[0m
+[  28% ] [90m[1m_update_scan_actions[22m | forearm_near.png[39m[0m
+[  29% ] [90m[1m_update_scan_actions[22m | hair_back.png[39m[0m
+[  29% ] [90m[1m_update_scan_actions[22m | hair_front.png[39m[0m
+[  30% ] [90m[1m_update_scan_actions[22m | head_face.png[39m[0m
+[  31% ] [90m[1m_update_scan_actions[22m | leg_far.png[39m[0m
+[  32% ] [90m[1m_update_scan_actions[22m | leg_near.png[39m[0m
+[  33% ] [90m[1m_update_scan_actions[22m | torso.png[39m[0m
+[  33% ] [90m[1m_update_scan_actions[22m | upper_arm_far.png[39m[0m
+[  34% ] [90m[1m_update_scan_actions[22m | upper_arm_near.png[39m[0m
+[  35% ] [90m[1m_update_scan_actions[22m | weapon.png[39m[0m
+[  36% ] [90m[1m_update_scan_actions[22m | coat_back.png[39m[0m
+[  37% ] [90m[1m_update_scan_actions[22m | forearm_far.png[39m[0m
+[  37% ] [90m[1m_update_scan_actions[22m | forearm_near.png[39m[0m
+[  38% ] [90m[1m_update_scan_actions[22m | hair_back.png[39m[0m
+[  39% ] [90m[1m_update_scan_actions[22m | hair_front.png[39m[0m
+[  40% ] [90m[1m_update_scan_actions[22m | head_face.png[39m[0m
+[  40% ] [90m[1m_update_scan_actions[22m | leg_far.png[39m[0m
+[  41% ] [90m[1m_update_scan_actions[22m | leg_near.png[39m[0m
+[  42% ] [90m[1m_update_scan_actions[22m | staff.png[39m[0m
+[  43% ] [90m[1m_update_scan_actions[22m | torso.png[39m[0m
+[  44% ] [90m[1m_update_scan_actions[22m | upper_arm_far.png[39m[0m
+[  44% ] [90m[1m_update_scan_actions[22m | upper_arm_near.png[39m[0m
+[  45% ] [90m[1m_update_scan_actions[22m | coat_back.png[39m[0m
+[  46% ] [90m[1m_update_scan_actions[22m | forearm_far.png[39m[0m
+[  47% ] [90m[1m_update_scan_actions[22m | forearm_near.png[39m[0m
+[  48% ] [90m[1m_update_scan_actions[22m | hair_back.png[39m[0m
+[  48% ] [90m[1m_update_scan_actions[22m | hair_front.png[39m[0m
+[  49% ] [90m[1m_update_scan_actions[22m | head_face.png[39m[0m
+[  50% ] [90m[1m_update_scan_actions[22m | leg_far.png[39m[0m
+[  51% ] [90m[1m_update_scan_actions[22m | leg_near.png[39m[0m
+[  51% ] [90m[1m_update_scan_actions[22m | torso.png[39m[0m
+[  52% ] [90m[1m_update_scan_actions[22m | upper_arm_far.png[39m[0m
+[  53% ] [90m[1m_update_scan_actions[22m | upper_arm_near.png[39m[0m
+[  54% ] [90m[1m_update_scan_actions[22m | weapon.png[39m[0m
+[  55% ] [90m[1m_update_scan_actions[22m | coat_back.png[39m[0m
+[  55% ] [90m[1m_update_scan_actions[22m | forearm_far.png[39m[0m
+[  56% ] [90m[1m_update_scan_actions[22m | forearm_near.png[39m[0m
+[  57% ] [90m[1m_update_scan_actions[22m | hair_back.png[39m[0m
+[  58% ] [90m[1m_update_scan_actions[22m | hair_front.png[39m[0m
+[  59% ] [90m[1m_update_scan_actions[22m | head_face.png[39m[0m
+[  59% ] [90m[1m_update_scan_actions[22m | leg_far.png[39m[0m
+[  60% ] [90m[1m_update_scan_actions[22m | leg_near.png[39m[0m
+[  61% ] [90m[1m_update_scan_actions[22m | torso.png[39m[0m
+[  62% ] [90m[1m_update_scan_actions[22m | upper_arm_far.png[39m[0m
+[  62% ] [90m[1m_update_scan_actions[22m | upper_arm_near.png[39m[0m
+[  63% ] [90m[1m_update_scan_actions[22m | weapon.png[39m[0m
+[  64% ] [90m[1m_update_scan_actions[22m | coat_back.png[39m[0m
+[  65% ] [90m[1m_update_scan_actions[22m | forearm_far.png[39m[0m
+[  66% ] [90m[1m_update_scan_actions[22m | forearm_near.png[39m[0m
+[  66% ] [90m[1m_update_scan_actions[22m | hair_back.png[39m[0m
+[  67% ] [90m[1m_update_scan_actions[22m | hair_front.png[39m[0m
+[  68% ] [90m[1m_update_scan_actions[22m | head_face.png[39m[0m
+[  69% ] [90m[1m_update_scan_actions[22m | leg_far.png[39m[0m
+[  70% ] [90m[1m_update_scan_actions[22m | leg_near.png[39m[0m
+[  70% ] [90m[1m_update_scan_actions[22m | torso.png[39m[0m
+[  71% ] [90m[1m_update_scan_actions[22m | upper_arm_far.png[39m[0m
+[  72% ] [90m[1m_update_scan_actions[22m | upper_arm_near.png[39m[0m
+[  73% ] [90m[1m_update_scan_actions[22m | weapon.png[39m[0m
+[  74% ] [90m[1m_update_scan_actions[22m | coat_back.png[39m[0m
+[  74% ] [90m[1m_update_scan_actions[22m | forearm_far.png[39m[0m
+[  75% ] [90m[1m_update_scan_actions[22m | forearm_near.png[39m[0m
+[  76% ] [90m[1m_update_scan_actions[22m | hair_back.png[39m[0m
+[  77% ] [90m[1m_update_scan_actions[22m | hair_front.png[39m[0m
+[  77% ] [90m[1m_update_scan_actions[22m | head_face.png[39m[0m
+[  78% ] [90m[1m_update_scan_actions[22m | leg_far.png[39m[0m
+[  79% ] [90m[1m_update_scan_actions[22m | leg_near.png[39m[0m
+[  80% ] [90m[1m_update_scan_actions[22m | torso.png[39m[0m
+[  81% ] [90m[1m_update_scan_actions[22m | upper_arm_far.png[39m[0m
+[  81% ] [90m[1m_update_scan_actions[22m | upper_arm_near.png[39m[0m
+[  82% ] [90m[1m_update_scan_actions[22m | weapon.png[39m[0m
+[  83% ] [90m[1m_update_scan_actions[22m | archer.png[39m[0m
+[  84% ] [90m[1m_update_scan_actions[22m | bomb.png[39m[0m
+[  85% ] [90m[1m_update_scan_actions[22m | fire.png[39m[0m
+[  85% ] [90m[1m_update_scan_actions[22m | ice.png[39m[0m
+[  86% ] [90m[1m_update_scan_actions[22m | lightning.png[39m[0m
+[  87% ] [90m[1m_update_scan_actions[22m | mark.png[39m[0m
+[  88% ] [90m[1m_update_scan_actions[22m | sniper.png[39m[0m
+[  88% ] [90m[1m_update_scan_actions[22m | sword.png[39m[0m
+[  89% ] [90m[1m_update_scan_actions[22m | background.png[39m[0m
+[  90% ] [90m[1m_update_scan_actions[22m | base.png[39m[0m
+[  91% ] [90m[1m_update_scan_actions[22m | slot.png[39m[0m
+[  92% ] [90m[1m_update_scan_actions[22m | spawn.png[39m[0m
+[  92% ] [90m[1m_update_scan_actions[22m | archer.png[39m[0m
+[  93% ] [90m[1m_update_scan_actions[22m | bomb.png[39m[0m
+[  94% ] [90m[1m_update_scan_actions[22m | fire.png[39m[0m
+[  95% ] [90m[1m_update_scan_actions[22m | ice.png[39m[0m
+[  96% ] [90m[1m_update_scan_actions[22m | lightning.png[39m[0m
+[  96% ] [90m[1m_update_scan_actions[22m | mark.png[39m[0m
+[  97% ] [90m[1m_update_scan_actions[22m | sniper.png[39m[0m
+[  98% ] [90m[1m_update_scan_actions[22m | sword.png[39m[0m
+[92m[ DONE ][39m [1m_update_scan_actions[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started 애셋 (다시) 가져오는 중 (126 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   0% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   1% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   2% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   3% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   3% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   4% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   5% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   6% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   7% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   7% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   8% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   9% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  10% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  11% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  11% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  12% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  13% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  14% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  14% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  15% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  16% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  17% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  18% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  18% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  19% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  20% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  21% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  22% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  22% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  23% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  24% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  25% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  25% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  26% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  27% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  28% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  29% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  29% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  30% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  31% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  32% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  33% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  33% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  34% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  35% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  36% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  37% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  37% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  38% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  39% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  40% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  40% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  41% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  42% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  43% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  44% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  44% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  45% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  46% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  47% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  48% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  48% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  49% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  50% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  51% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  51% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  52% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  53% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  54% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  55% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  55% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  56% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  57% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  58% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  59% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  59% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  60% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  61% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  62% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  62% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  63% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  64% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  65% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  66% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  66% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  67% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  68% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  69% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  70% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  70% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  71% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  72% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  73% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  74% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  74% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  75% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  76% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  77% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  77% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  78% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  79% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  80% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  81% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  81% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  82% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  83% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  84% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  85% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  85% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  86% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  87% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  88% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  88% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  89% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  90% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  91% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  92% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  92% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  93% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  94% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  95% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  96% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  96% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  97% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  98% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   0% ] [90m[1mreimport[22m | 다시 가져오기 전 작업을 수행 중...[39m[0m
+[   0% ] [90m[1mreimport[22m | NotoSansKR-Regular.otf[39m[0m
+[   0% ] [90m[1mreimport[22m | NotoSansKR-Regular.otf[39m[0m
+[   1% ] [90m[1mreimport[22m | coat_back.png[39m[0m
+[   2% ] [90m[1mreimport[22m | weapon.png[39m[0m
+[   3% ] [90m[1mreimport[22m | upper_arm_near.png[39m[0m
+[   3% ] [90m[1mreimport[22m | upper_arm_far.png[39m[0m
+[   4% ] [90m[1mreimport[22m | torso.png[39m[0m
+[   5% ] [90m[1mreimport[22m | leg_near.png[39m[0m
+[   6% ] [90m[1mreimport[22m | leg_far.png[39m[0m
+[   7% ] [90m[1mreimport[22m | head_face.png[39m[0m
+[   7% ] [90m[1mreimport[22m | hair_front.png[39m[0m
+[   8% ] [90m[1mreimport[22m | hair_back.png[39m[0m
+[   9% ] [90m[1mreimport[22m | forearm_near.png[39m[0m
+[  10% ] [90m[1mreimport[22m | forearm_far.png[39m[0m
+[  11% ] [90m[1mreimport[22m | coat_back.png[39m[0m
+[  11% ] [90m[1mreimport[22m | weapon.png[39m[0m
+[  12% ] [90m[1mreimport[22m | upper_arm_near.png[39m[0m
+[  13% ] [90m[1mreimport[22m | upper_arm_far.png[39m[0m
+[  14% ] [90m[1mreimport[22m | torso.png[39m[0m
+[  14% ] [90m[1mreimport[22m | leg_near.png[39m[0m
+[  15% ] [90m[1mreimport[22m | leg_far.png[39m[0m
+[  16% ] [90m[1mreimport[22m | head_face.png[39m[0m
+[  17% ] [90m[1mreimport[22m | hair_front.png[39m[0m
+[  18% ] [90m[1mreimport[22m | hair_back.png[39m[0m
+[  18% ] [90m[1mreimport[22m | forearm_near.png[39m[0m
+[  19% ] [90m[1mreimport[22m | forearm_far.png[39m[0m
+[  20% ] [90m[1mreimport[22m | coat_back.png[39m[0m
+[  21% ] [90m[1mreimport[22m | weapon.png[39m[0m
+[  22% ] [90m[1mreimport[22m | upper_arm_near.png[39m[0m
+[  22% ] [90m[1mreimport[22m | upper_arm_far.png[39m[0m
+[  23% ] [90m[1mreimport[22m | torso.png[39m[0m
+[  24% ] [90m[1mreimport[22m | leg_near.png[39m[0m
+[  25% ] [90m[1mreimport[22m | leg_far.png[39m[0m
+[  25% ] [90m[1mreimport[22m | sword.png[39m[0m
+[  26% ] [90m[1mreimport[22m | sniper.png[39m[0m
+[  27% ] [90m[1mreimport[22m | mark.png[39m[0m
+[  28% ] [90m[1mreimport[22m | lightning.png[39m[0m
+[  29% ] [90m[1mreimport[22m | ice.png[39m[0m
+[  29% ] [90m[1mreimport[22m | fire.png[39m[0m
+[  30% ] [90m[1mreimport[22m | bomb.png[39m[0m
+[  31% ] [90m[1mreimport[22m | archer.png[39m[0m
+[  32% ] [90m[1mreimport[22m | spawn.png[39m[0m
+[  33% ] [90m[1mreimport[22m | slot.png[39m[0m
+[  33% ] [90m[1mreimport[22m | base.png[39m[0m
+[  34% ] [90m[1mreimport[22m | background.png[39m[0m
+[  35% ] [90m[1mreimport[22m | sword.png[39m[0m
+[  36% ] [90m[1mreimport[22m | sniper.png[39m[0m
+[  37% ] [90m[1mreimport[22m | mark.png[39m[0m
+[  37% ] [90m[1mreimport[22m | lightning.png[39m[0m
+[  38% ] [90m[1mreimport[22m | ice.png[39m[0m
+[  39% ] [90m[1mreimport[22m | fire.png[39m[0m
+[  40% ] [90m[1mreimport[22m | bomb.png[39m[0m
+[  40% ] [90m[1mreimport[22m | archer.png[39m[0m
+[  41% ] [90m[1mreimport[22m | weapon.png[39m[0m
+[  42% ] [90m[1mreimport[22m | upper_arm_near.png[39m[0m
+[  43% ] [90m[1mreimport[22m | upper_arm_far.png[39m[0m
+[  44% ] [90m[1mreimport[22m | torso.png[39m[0m
+[  44% ] [90m[1mreimport[22m | leg_near.png[39m[0m
+[  45% ] [90m[1mreimport[22m | leg_far.png[39m[0m
+[  46% ] [90m[1mreimport[22m | head_face.png[39m[0m
+[  47% ] [90m[1mreimport[22m | hair_front.png[39m[0m
+[  48% ] [90m[1mreimport[22m | hair_back.png[39m[0m
+[  48% ] [90m[1mreimport[22m | forearm_near.png[39m[0m
+[  49% ] [90m[1mreimport[22m | forearm_far.png[39m[0m
+[  50% ] [90m[1mreimport[22m | upper_arm_far.png[39m[0m
+[  51% ] [90m[1mreimport[22m | torso.png[39m[0m
+[  51% ] [90m[1mreimport[22m | leg_near.png[39m[0m
+[  52% ] [90m[1mreimport[22m | leg_far.png[39m[0m
+[  53% ] [90m[1mreimport[22m | head_face.png[39m[0m
+[  54% ] [90m[1mreimport[22m | hair_front.png[39m[0m
+[  55% ] [90m[1mreimport[22m | hair_back.png[39m[0m
+[  55% ] [90m[1mreimport[22m | forearm_near.png[39m[0m
+[  56% ] [90m[1mreimport[22m | forearm_far.png[39m[0m
+[  57% ] [90m[1mreimport[22m | coat_back.png[39m[0m
+[  58% ] [90m[1mreimport[22m | weapon.png[39m[0m
+[  59% ] [90m[1mreimport[22m | upper_arm_near.png[39m[0m
+[  59% ] [90m[1mreimport[22m | upper_arm_far.png[39m[0m
+[  60% ] [90m[1mreimport[22m | torso.png[39m[0m
+[  61% ] [90m[1mreimport[22m | leg_near.png[39m[0m
+[  62% ] [90m[1mreimport[22m | leg_far.png[39m[0m
+[  62% ] [90m[1mreimport[22m | head_face.png[39m[0m
+[  63% ] [90m[1mreimport[22m | hair_front.png[39m[0m
+[  64% ] [90m[1mreimport[22m | hair_back.png[39m[0m
+[  65% ] [90m[1mreimport[22m | forearm_near.png[39m[0m
+[  66% ] [90m[1mreimport[22m | forearm_far.png[39m[0m
+[  66% ] [90m[1mreimport[22m | coat_back.png[39m[0m
+[  67% ] [90m[1mreimport[22m | normal_sheet.png[39m[0m
+[  68% ] [90m[1mreimport[22m | normal.png[39m[0m
+[  69% ] [90m[1mreimport[22m | fast_sheet.png[39m[0m
+[  70% ] [90m[1mreimport[22m | fast.png[39m[0m
+[  70% ] [90m[1mreimport[22m | boss_sheet.png[39m[0m
+[  71% ] [90m[1mreimport[22m | boss.png[39m[0m
+[  72% ] [90m[1mreimport[22m | armored_sheet.png[39m[0m
+[  73% ] [90m[1mreimport[22m | armored.png[39m[0m
+[  74% ] [90m[1mreimport[22m | ice_cast.png[39m[0m
+[  74% ] [90m[1mreimport[22m | head_face.png[39m[0m
+[  75% ] [90m[1mreimport[22m | hair_front.png[39m[0m
+[  76% ] [90m[1mreimport[22m | hair_back.png[39m[0m
+[  77% ] [90m[1mreimport[22m | forearm_near.png[39m[0m
+[  77% ] [90m[1mreimport[22m | forearm_far.png[39m[0m
+[  78% ] [90m[1mreimport[22m | coat_back.png[39m[0m
+[  79% ] [90m[1mreimport[22m | upper_arm_near.png[39m[0m
+[  80% ] [90m[1mreimport[22m | upper_arm_far.png[39m[0m
+[  81% ] [90m[1mreimport[22m | torso.png[39m[0m
+[  81% ] [90m[1mreimport[22m | staff.png[39m[0m
+[  82% ] [90m[1mreimport[22m | leg_near.png[39m[0m
+[  83% ] [90m[1mreimport[22m | leg_far.png[39m[0m
+[  84% ] [90m[1mreimport[22m | head_face.png[39m[0m
+[  85% ] [90m[1mreimport[22m | hair_front.png[39m[0m
+[  85% ] [90m[1mreimport[22m | hair_back.png[39m[0m
+[  86% ] [90m[1mreimport[22m | forearm_near.png[39m[0m
+[  87% ] [90m[1mreimport[22m | forearm_far.png[39m[0m
+[  88% ] [90m[1mreimport[22m | coat_back.png[39m[0m
+[  88% ] [90m[1mreimport[22m | weapon.png[39m[0m
+[  89% ] [90m[1mreimport[22m | upper_arm_near.png[39m[0m
+[  90% ] [90m[1mreimport[22m | upper_arm_far.png[39m[0m
+[  91% ] [90m[1mreimport[22m | torso.png[39m[0m
+[  92% ] [90m[1mreimport[22m | leg_near.png[39m[0m
+[  92% ] [90m[1mreimport[22m | leg_far.png[39m[0m
+[  93% ] [90m[1mreimport[22m | head_face.png[39m[0m
+[  94% ] [90m[1mreimport[22m | hair_front.png[39m[0m
+[  95% ] [90m[1mreimport[22m | hair_back.png[39m[0m
+[  96% ] [90m[1mreimport[22m | forearm_near.png[39m[0m
+[  96% ] [90m[1mreimport[22m | forearm_far.png[39m[0m
+[  97% ] [90m[1mreimport[22m | coat_back.png[39m[0m
+[  98% ] [90m[1mreimport[22m | weapon.png[39m[0m
+[  99% ] [90m[1mreimport[22m | 애셋 가져오기 마무리 중...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started 애셋 (다시) 가져오는 중 (126 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | 다시 가져오기 후 작업을 수행 중...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started 편집기를 불러오는 중 (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | 편집기 레이아웃을 불러오는 중...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | 독을 불러오는 중...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m

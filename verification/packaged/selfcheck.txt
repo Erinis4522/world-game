@@ -1,0 +1,38 @@
+data: res://data/game_config.json, res://data/heroes.json, res://data/enemies.json, res://data/waves.json, res://data/dialog.json
+PNG heroes/sword.png
+PNG heroes/archer.png
+PNG heroes/sniper.png
+PNG heroes/fire.png
+PNG heroes/ice.png
+PNG heroes/lightning.png
+PNG heroes/bomb.png
+PNG heroes/mark.png
+PNG portraits/sword.png
+PNG portraits/archer.png
+PNG portraits/sniper.png
+PNG portraits/fire.png
+PNG portraits/ice.png
+PNG portraits/lightning.png
+PNG portraits/bomb.png
+PNG portraits/mark.png
+PNG effects/ice_cast.png
+PNG enemies/normal.png
+PNG enemies/fast.png
+PNG enemies/armored.png
+PNG enemies/boss.png
+PNG map/background.png
+PNG map/spawn.png
+PNG map/base.png
+PNG map/slot.png
+rig sword: true (12 parts)
+rig archer: true (12 parts)
+rig sniper: true (12 parts)
+rig fire: true (12 parts)
+rig ice: true (12 parts)
+rig lightning: true (12 parts)
+rig bomb: true (12 parts)
+rig mark: true (12 parts)
+enemy frames normal: 4
+enemy frames fast: 4
+enemy frames armored: 4
+enemy frames boss: 4

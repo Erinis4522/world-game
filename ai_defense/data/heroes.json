@@ -1,0 +1,361 @@
+{
+	"order": [
+		"SWORD",
+		"ARCHER",
+		"SNIPER",
+		"FIRE",
+		"ICE",
+		"LIGHTNING",
+		"BOMB",
+		"MARK"
+	],
+	"heroes": {
+		"SWORD": {
+			"name": "검객",
+			"person": "한결",
+			"profile": "23세 · 전위 작전요원",
+			"bio": "침착하게 앞길을 여는 전위 요원. 가까이 몰려든 적을 빠르게 정리해 동료들의 공간을 확보해요.",
+			"glyph": "검",
+			"asset": "sword",
+			"color": "#e05a4f",
+			"art_status": "final",
+			"attack": "근접 베기",
+			"feature": "가까운 적 2명 동시 타격",
+			"desc": "짧은 거리에서 두 명을 한꺼번에 베어요.",
+			"special_name": "몰려 있는 적 베기",
+			"look": {
+				"skin": "#f3cfa8",
+				"hair": "#2a2a33",
+				"hair_style": "spiky",
+				"outfit": "#34558b",
+				"accent": "#c9d2df",
+				"boots": "#6b4a2b",
+				"eyes": "#3b2a20"
+			},
+			"range": 1.9,
+			"damage": 6,
+			"interval": 0.65,
+			"max_targets": 2,
+			"cluster_radius": 1.2,
+			"gender": "male",
+			"age": 23,
+			"portrait": "sword",
+			"portrait_crop": [
+				0.28,
+				0.0,
+				0.46,
+				0.306667
+			],
+			"portrait_bust": [
+				0.17,
+				0.0,
+				0.66,
+				0.56
+			]
+		},
+		"ARCHER": {
+			"name": "궁수",
+			"person": "나래",
+			"profile": "21세 · 기동 정찰요원",
+			"bio": "작은 움직임도 놓치지 않는 정찰 요원. 빠른 활 사격으로 약해진 적을 마무리하고 팀에 상황을 알려요.",
+			"glyph": "궁",
+			"asset": "archer",
+			"color": "#5cb85c",
+			"art_status": "final",
+			"attack": "빠른 화살",
+			"feature": "약해진 적 마무리",
+			"desc": "화살을 빠르게 쏘아 체력이 적은 적을 끝내요.",
+			"special_name": "약해진 적 마무리",
+			"look": {
+				"skin": "#f6d7b8",
+				"hair": "#e8c977",
+				"hair_style": "ponytail",
+				"outfit": "#3d6b3a",
+				"accent": "#8b5a2b",
+				"boots": "#3a2a1c",
+				"eyes": "#3f7a3a"
+			},
+			"range": 3.7,
+			"damage": 6,
+			"interval": 0.65,
+			"gender": "female",
+			"age": 21,
+			"portrait": "archer",
+			"portrait_crop": [
+				0.28,
+				0.0,
+				0.46,
+				0.306667
+			],
+			"portrait_bust": [
+				0.17,
+				0.0,
+				0.66,
+				0.56
+			]
+		},
+		"SNIPER": {
+			"name": "저격수",
+			"person": "시온",
+			"profile": "25세 · 정밀 사격요원",
+			"bio": "꼼꼼하게 관찰하고 확실한 한 발을 고르는 사격 요원. 단단한 적을 먼저 살펴 동료들의 부담을 덜어 줘요.",
+			"glyph": "저",
+			"asset": "sniper",
+			"color": "#8a6d3b",
+			"art_status": "final",
+			"attack": "강한 한 방",
+			"feature": "방어력 50% 무시",
+			"desc": "멀리서 느리지만 아주 세게 쏴요. 단단한 적에게 강해요.",
+			"special_name": "단단한 적 노리기",
+			"look": {
+				"skin": "#ecc9a6",
+				"hair": "#e9e9ee",
+				"hair_style": "bald_sides",
+				"glasses": "monocle",
+				"outfit": "#2f4a5f",
+				"accent": "#d9b44a",
+				"boots": "#2b2b2b",
+				"eyes": "#2a2a2a"
+			},
+			"range": 5.8,
+			"damage": 20,
+			"interval": 1.8,
+			"armor_pierce": 0.5,
+			"hp_ref": 200,
+			"gender": "male",
+			"age": 25,
+			"portrait": "sniper",
+			"portrait_crop": [
+				0.28,
+				0.0,
+				0.46,
+				0.306667
+			],
+			"portrait_bust": [
+				0.17,
+				0.0,
+				0.66,
+				0.56
+			]
+		},
+		"FIRE": {
+			"name": "화염술사",
+			"person": "태오",
+			"profile": "24세 · 열에너지 제어요원",
+			"bio": "열에너지를 안정적으로 다루는 현장 요원. 모여 있는 적에게 불꽃을 집중하면서 동료가 다치지 않게 주변을 살펴요.",
+			"glyph": "화",
+			"asset": "fire",
+			"color": "#f0883e",
+			"art_status": "final",
+			"attack": "작은 불꽃 폭발",
+			"feature": "화상: 3초간 초당 2 피해",
+			"desc": "작은 범위에 불을 붙여 계속 피해를 줘요.",
+			"special_name": "모인 적 불태우기",
+			"look": {
+				"skin": "#a8714a",
+				"hair": "#1e1a18",
+				"hair_style": "short",
+				"outfit": "#e07a2e",
+				"accent": "#5a3a22",
+				"boots": "#3a2a1c",
+				"eyes": "#1e1a18"
+			},
+			"range": 3.1,
+			"damage": 9,
+			"interval": 1.5,
+			"aoe_radius": 0.9,
+			"burn_duration": 3.0,
+			"burn_dps": 2.0,
+			"gender": "male",
+			"age": 24,
+			"portrait": "fire",
+			"portrait_crop": [
+				0.28,
+				0.0,
+				0.46,
+				0.306667
+			],
+			"portrait_bust": [
+				0.17,
+				0.0,
+				0.66,
+				0.56
+			]
+		},
+		"ICE": {
+			"name": "빙결술사",
+			"person": "서리",
+			"profile": "22세 · 냉각 제어요원",
+			"bio": "차분하게 전장을 읽는 냉각 제어 요원. 빠른 적을 늦춰 동료들이 대응할 시간을 만들어요.",
+			"glyph": "빙",
+			"asset": "ice",
+			"color": "#4fb3e0",
+			"art_status": "final",
+			"portrait": "ice",
+			"portrait_crop": [
+				0.28,
+				0.0,
+				0.46,
+				0.306667
+			],
+			"attack": "얼음 화살",
+			"feature": "이동속도 35% 감소",
+			"desc": "맞은 적을 잠깐 느리게 만들어요.",
+			"special_name": "빠른 적 느리게 하기",
+			"look": {
+				"skin": "#f8e1d0",
+				"hair": "#cfd9ea",
+				"hair_style": "long",
+				"outfit": "#3b5fa0",
+				"accent": "#ffffff",
+				"boots": "#2b2f45",
+				"eyes": "#4a78c0"
+			},
+			"range": 3.3,
+			"damage": 8,
+			"interval": 1.1,
+			"slow": 0.35,
+			"slow_duration": 1.8,
+			"gender": "female",
+			"age": 22,
+			"portrait_bust": [
+				0.17,
+				0.0,
+				0.66,
+				0.56
+			]
+		},
+		"LIGHTNING": {
+			"name": "번개술사",
+			"person": "도윤",
+			"profile": "21세 · 전기 시스템 요원",
+			"bio": "전기 장비를 직접 점검하고 개선하는 현장 요원. 적들의 위치를 살펴 전기가 이어질 순간을 골라요.",
+			"glyph": "번",
+			"asset": "lightning",
+			"color": "#9b6bd6",
+			"art_status": "final",
+			"attack": "연쇄 번개",
+			"feature": "주변 적 2명에게 전이",
+			"desc": "번개가 근처 적에게 차례로 옮겨 가요.",
+			"special_name": "번개 이어 맞히기",
+			"look": {
+				"skin": "#f5d3b0",
+				"hair": "#6b4a2b",
+				"hair_style": "messy",
+				"glasses": "goggles",
+				"outfit": "#6a4aa8",
+				"accent": "#ffd23f",
+				"boots": "#3a3a3a",
+				"eyes": "#3b2a20"
+			},
+			"range": 3.2,
+			"damage": 9,
+			"interval": 1.5,
+			"chain_count": 2,
+			"chain_range": 1.6,
+			"chain_falloff": 0.7,
+			"gender": "male",
+			"age": 21,
+			"portrait": "lightning",
+			"portrait_crop": [
+				0.28,
+				0.0,
+				0.46,
+				0.306667
+			],
+			"portrait_bust": [
+				0.17,
+				0.0,
+				0.66,
+				0.56
+			]
+		},
+		"BOMB": {
+			"name": "폭탄공학자",
+			"person": "유나",
+			"profile": "23세 · 전술 장비 공학자",
+			"bio": "상황에 맞는 장비를 고르는 공학자. 적이 모일 자리를 예측해 넓은 범위를 노리고, 장비 점검도 꼼꼼히 해요.",
+			"glyph": "폭",
+			"asset": "bomb",
+			"color": "#6c757d",
+			"art_status": "final",
+			"attack": "느린 폭탄",
+			"feature": "반경 1.2 폭발",
+			"desc": "느리게 날아가는 폭탄이 넓게 터져요.",
+			"special_name": "모인 적 폭파",
+			"look": {
+				"skin": "#efcfb2",
+				"hair": "#c9c9cf",
+				"hair_style": "bun",
+				"glasses": "goggles",
+				"outfit": "#7a3b3b",
+				"accent": "#d9a441",
+				"boots": "#3a2a1c",
+				"eyes": "#2a2a2a"
+			},
+			"range": 4.3,
+			"damage": 14,
+			"interval": 2.5,
+			"blast_radius": 1.2,
+			"projectile_speed": 7.0,
+			"gender": "female",
+			"age": 23,
+			"portrait": "bomb",
+			"portrait_crop": [
+				0.28,
+				0.0,
+				0.46,
+				0.306667
+			],
+			"portrait_bust": [
+				0.17,
+				0.0,
+				0.66,
+				0.56
+			]
+		},
+		"MARK": {
+			"name": "표식술사",
+			"person": "하은",
+			"profile": "24세 · 전술 정보 분석요원",
+			"bio": "정보를 정리해 동료의 판단을 돕는 분석 요원. 함께 공격할 표적을 표시하고, 작전의 근거를 쉽게 설명해 줘요.",
+			"glyph": "표",
+			"asset": "mark",
+			"color": "#e0c040",
+			"art_status": "final",
+			"attack": "표식 마법",
+			"feature": "받는 피해 35% 증가",
+			"desc": "표식을 붙인 적은 동료에게 더 아프게 맞아요.",
+			"special_name": "함께 칠 적 표시",
+			"look": {
+				"skin": "#f6dccb",
+				"hair": "#c8c3d8",
+				"hair_style": "long",
+				"outfit": "#3a2f4a",
+				"accent": "#e0c040",
+				"boots": "#2a2a2a",
+				"eyes": "#7a5ab0"
+			},
+			"range": 3.2,
+			"damage": 5,
+			"interval": 0.9,
+			"mark_amp": 0.35,
+			"mark_duration": 2.5,
+			"gender": "female",
+			"age": 24,
+			"portrait": "mark",
+			"portrait_crop": [
+				0.28,
+				0.0,
+				0.46,
+				0.306667
+			],
+			"portrait_bust": [
+				0.17,
+				0.0,
+				0.66,
+				0.56
+			]
+		}
+	}
+}

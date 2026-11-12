@@ -1,0 +1,335 @@
+{
+  "recovery_date": "2026-11-12",
+  "timezone": "Asia/Seoul",
+  "original_source_archive": "source.zip",
+  "source_files_checked": 361,
+  "source_files_identical": 361,
+  "source_files_modified": 0,
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "import_exit_code": 0,
+  "test_groups": 17,
+  "checks_passed": 914,
+  "checks_failed": 0,
+  "tests_exit_code": 0,
+  "packaged_headless_frames": 120,
+  "packaged_exit_code": 0,
+  "packaged_stderr_empty": true,
+  "gui_retested": false,
+  "original_files": [
+    {
+      "path": "읽어주세요.txt",
+      "bytes": 1587,
+      "sha256": "26301676ec01e1a2aa1ce545a31dfa9179c3ee13579a3c83432934a01777bb0b"
+    },
+    {
+      "path": "체험센터_실행.cmd",
+      "bytes": 94,
+      "sha256": "1a6dd35789743289cc2bd549b198d5ab12ae7c24c1bf57ab97c36c5b3891918d"
+    },
+    {
+      "path": "한화면_실행.cmd",
+      "bytes": 113,
+      "sha256": "654c2e5007d1f75084ff53f8312a70646a32e21e14b108badd136c1d37502007"
+    },
+    {
+      "path": "AIDefense.exe",
+      "bytes": 180858888,
+      "sha256": "ab1824f85bfd8e0e4128182c000c4003a3e042245b2967848d089b2a04b22424"
+    },
+    {
+      "path": "AIDefense.pck",
+      "bytes": 39902264,
+      "sha256": "6470b4619c746477a78aa5c73bf8c0e96ef01d0081c3de7bd1cd85fd6fb0d37c"
+    },
+    {
+      "path": "Godot_licenses.txt",
+      "bytes": 107692,
+      "sha256": "bc8306aca9d6a858cbc34bc3f5bc8d85b2fd21b06067be80b387410c4c052d02"
+    },
+    {
+      "path": "NotoSansKR_OFL.txt",
+      "bytes": 4301,
+      "sha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2"
+    },
+    {
+      "path": "previews/04_placement_control.png",
+      "bytes": 598430,
+      "sha256": "6f76e708371adbcbd535772802cc3a820268c962b627cb46b97fbaccf9cac8b8"
+    },
+    {
+      "path": "previews/05_battle_arena.png",
+      "bytes": 1338326,
+      "sha256": "4c93de8f163231dcb191993e0cd1339c306a5dc0214f798839347705faad99e1"
+    },
+    {
+      "path": "previews/06_boss_arena.png",
+      "bytes": 1369049,
+      "sha256": "7e9b1bdc2f665042986d9339f25d4b5add8949ff37c656a4d74a3c930a9669de"
+    },
+    {
+      "path": "previews/final_gameplay.png",
+      "bytes": 3038570,
+      "sha256": "933ec6ce0b27003ec04cf9a20ae446264c3acd391e443199f158c9c62f6dac5c"
+    },
+    {
+      "path": "previews/map_layout.png",
+      "bytes": 2784174,
+      "sha256": "0628099eb5c2bb05ac97f213b21d6e354286b95a7db1e1537ea06ddb01835bf4"
+    },
+    {
+      "path": "previews/monsters.png",
+      "bytes": 771895,
+      "sha256": "4129d7316ad555888b0f261847049f7eebeae0ae29edbfd7ff609a4df54d86ac"
+    },
+    {
+      "path": "source.zip",
+      "bytes": 39335017,
+      "sha256": "59fe521a414e5b5481cda6da35fe7bb936ea7553d1553df36f29253dc5a267e1"
+    },
+    {
+      "path": "verification/invariants.json",
+      "bytes": 176,
+      "sha256": "29da71192c06f922a88b0ad0aba259f9ca174b8adde99c1c0f35511126a4e9b3"
+    },
+    {
+      "path": "verification/packaged/selfcheck_arena.png",
+      "bytes": 3038570,
+      "sha256": "933ec6ce0b27003ec04cf9a20ae446264c3acd391e443199f158c9c62f6dac5c"
+    },
+    {
+      "path": "verification/packaged/selfcheck_control.png",
+      "bytes": 367963,
+      "sha256": "c74979bdddfb3a76a9cb040abb221974deadc00d386c36d106bfc397471d2a97"
+    },
+    {
+      "path": "verification/packaged/selfcheck.txt",
+      "bytes": 986,
+      "sha256": "e94d0b3358ae78727e450880f533b400bb3c17742b75e04b076599fcd89c71b5"
+    },
+    {
+      "path": "verification/summary.json",
+      "bytes": 2341,
+      "sha256": "9e2c9bf4d03cfdfd5ff49098669abb2c2c70767c4a405601d64798362e8a410d"
+    },
+    {
+      "path": "verification/team1/01_cards_arena.png",
+      "bytes": 724959,
+      "sha256": "2221f2baa3d9b3c5657050620b40c898f933dbd071df18d72a71eedda557273e"
+    },
+    {
+      "path": "verification/team1/01_cards_control.png",
+      "bytes": 193280,
+      "sha256": "5905cd03e1e7b83aea1f2695c4a44d086d7cf5fe9010706bde07c11cb968b512"
+    },
+    {
+      "path": "verification/team1/02_detail_fire_arena.png",
+      "bytes": 724959,
+      "sha256": "2221f2baa3d9b3c5657050620b40c898f933dbd071df18d72a71eedda557273e"
+    },
+    {
+      "path": "verification/team1/02_detail_fire_control.png",
+      "bytes": 323963,
+      "sha256": "ffb0f32f2cf30b3ef2353c0483b32c2b292047c00677177f998a461da03375db"
+    },
+    {
+      "path": "verification/team1/02_detail_ice_arena.png",
+      "bytes": 681081,
+      "sha256": "ecd4330823ab168679f4d134908867b3ce69c24509e12304e8b3ac2f37345ae1"
+    },
+    {
+      "path": "verification/team1/02_detail_ice_control.png",
+      "bytes": 325828,
+      "sha256": "c73ec530bf71c06c42b0fb3a338ec07d02a0651457c7ecced0f2f5c362814ca2"
+    },
+    {
+      "path": "verification/team1/02_detail_lightning_arena.png",
+      "bytes": 692657,
+      "sha256": "3b4cbb0e8fbdb0893ab84e64e735dc3df4abc1df126357929b2fdfc30b12cc48"
+    },
+    {
+      "path": "verification/team1/02_detail_lightning_control.png",
+      "bytes": 333476,
+      "sha256": "1b2e204b3e7d8155a6e61375d783af9b8115a8ced0bad5d5b406c8aedbb83c16"
+    },
+    {
+      "path": "verification/team1/03_lineup_arena.png",
+      "bytes": 712023,
+      "sha256": "bea14e26e1e0ab0ef38639f2ea218efc6b4dea313ce51a17cf74df0171b945cc"
+    },
+    {
+      "path": "verification/team1/03_lineup_control.png",
+      "bytes": 192085,
+      "sha256": "24e76b35787598c9720fe1b0d0df96bf585c050091b28dad455f9d9f73c75bd3"
+    },
+    {
+      "path": "verification/team1/04_placement_arena.png",
+      "bytes": 1347802,
+      "sha256": "b6c26650bc84d7b00de28862aedbcbdbbd520422c3451d952097ebdec2b7124e"
+    },
+    {
+      "path": "verification/team1/04_placement_control.png",
+      "bytes": 598430,
+      "sha256": "6f76e708371adbcbd535772802cc3a820268c962b627cb46b97fbaccf9cac8b8"
+    },
+    {
+      "path": "verification/team1/05_battle_arena.png",
+      "bytes": 1338326,
+      "sha256": "4c93de8f163231dcb191993e0cd1339c306a5dc0214f798839347705faad99e1"
+    },
+    {
+      "path": "verification/team1/05_battle_control.png",
+      "bytes": 309073,
+      "sha256": "43c7a35872db6250489f59e8de193cb0821fc3ed77c8037f4c69632a899edc4c"
+    },
+    {
+      "path": "verification/team1/06_boss_arena.png",
+      "bytes": 1369049,
+      "sha256": "7e9b1bdc2f665042986d9339f25d4b5add8949ff37c656a4d74a3c930a9669de"
+    },
+    {
+      "path": "verification/team1/06_boss_control.png",
+      "bytes": 313293,
+      "sha256": "73431473a594b2f225b4114a0d4d7e99c994cd378c9ff50c4f7ff6ee93989801"
+    },
+    {
+      "path": "verification/team1/06_suggestion_arena.png",
+      "bytes": 1022145,
+      "sha256": "f4236635edc2183ea03ac5e2bbefd3c64fc637fdc097e62dea24a4528222d272"
+    },
+    {
+      "path": "verification/team1/06_suggestion_control.png",
+      "bytes": 154184,
+      "sha256": "c5d460ff1cf715d26a942b5147ec79b75ee525c833a6835e0887c4729db42a3d"
+    },
+    {
+      "path": "verification/team1/07_result_arena.png",
+      "bytes": 479402,
+      "sha256": "86546654545c6ed4767c2919b24583302498907b91ba5e881a5fb2adc58886b8"
+    },
+    {
+      "path": "verification/team1/07_result_control.png",
+      "bytes": 179018,
+      "sha256": "f51fbd4d7feb16388edd11bf1b35309065a0565a3dfef8d96c781ec32bad7919"
+    },
+    {
+      "path": "verification/team1/report.json",
+      "bytes": 646,
+      "sha256": "026274eafc3eb3bf1d3b05d2a8d37d7c25b49f9d792a6809ba04c9e28d7e2abc"
+    },
+    {
+      "path": "verification/team2/01_cards_arena.png",
+      "bytes": 724959,
+      "sha256": "2221f2baa3d9b3c5657050620b40c898f933dbd071df18d72a71eedda557273e"
+    },
+    {
+      "path": "verification/team2/01_cards_control.png",
+      "bytes": 193280,
+      "sha256": "5905cd03e1e7b83aea1f2695c4a44d086d7cf5fe9010706bde07c11cb968b512"
+    },
+    {
+      "path": "verification/team2/02_detail_bomb_arena.png",
+      "bytes": 724959,
+      "sha256": "2221f2baa3d9b3c5657050620b40c898f933dbd071df18d72a71eedda557273e"
+    },
+    {
+      "path": "verification/team2/02_detail_bomb_control.png",
+      "bytes": 315628,
+      "sha256": "23772c1b282e61c904e532a8f5821a699b6cf7a270ce65ebe7e44e21d64219be"
+    },
+    {
+      "path": "verification/team2/02_detail_mark_arena.png",
+      "bytes": 681926,
+      "sha256": "1857d1338325458d211fb43ec13a5c538b39385c54a8b9518906a990af3c4f37"
+    },
+    {
+      "path": "verification/team2/02_detail_mark_control.png",
+      "bytes": 319354,
+      "sha256": "a3c11252075c0b5badf8840f0d115bd79617dc66bf1bc09f3ed0aee3fc5a225e"
+    },
+    {
+      "path": "verification/team2/02_detail_sword_arena.png",
+      "bytes": 679979,
+      "sha256": "8893009aad071f65df89d2e1abd0cc391d8999d9f3b1a765abef867e2e187d5b"
+    },
+    {
+      "path": "verification/team2/02_detail_sword_control.png",
+      "bytes": 329712,
+      "sha256": "c9ec08450d026ac0459f251f5197cb45c4ffd0931abff39eae16f89d88b4e28d"
+    },
+    {
+      "path": "verification/team2/03_lineup_arena.png",
+      "bytes": 671821,
+      "sha256": "95b6c750618f991a5d7ef918b5920d21f2a82c24a85b80dbe99166bf869ac4f4"
+    },
+    {
+      "path": "verification/team2/03_lineup_control.png",
+      "bytes": 191989,
+      "sha256": "78f14c0118981eb81186f980340d0fe8f78a6750b47e7f2ed4469e94e0a396bb"
+    },
+    {
+      "path": "verification/team2/04_placement_arena.png",
+      "bytes": 1345566,
+      "sha256": "5f7affed844402f3c71fd31d2e14d9522e792e521f29fcd0220112ea9027a7e1"
+    },
+    {
+      "path": "verification/team2/04_placement_control.png",
+      "bytes": 593366,
+      "sha256": "57a1bfb6d3e8c13a1bdc04e718877e5ffbd282c6828cb1419321356419af5384"
+    },
+    {
+      "path": "verification/team2/05_battle_arena.png",
+      "bytes": 1337985,
+      "sha256": "db527c8b658d354e4fe73e29b31cd6d6e0a3e7bde26ce2cc705f21818cd68fe9"
+    },
+    {
+      "path": "verification/team2/05_battle_control.png",
+      "bytes": 290191,
+      "sha256": "a894bb4cde127422f459b3bd386a547ecd0ce83d841546e7b1602aad07c1ff50"
+    },
+    {
+      "path": "verification/team2/06_boss_arena.png",
+      "bytes": 1366264,
+      "sha256": "b13cb61530f325eb71af1f0d395f69b78d8ab27826a05622a4deb5647b63533d"
+    },
+    {
+      "path": "verification/team2/06_boss_control.png",
+      "bytes": 296156,
+      "sha256": "ccd8d0d104c197d152c3ab8d5bf25e99ec856622450384474d5dc12d69c9cc14"
+    },
+    {
+      "path": "verification/team2/06_suggestion_arena.png",
+      "bytes": 1017788,
+      "sha256": "2aa1164abde44d1001c57efc65ca2e61fcbccc5722195202779ab24e5982b4a8"
+    },
+    {
+      "path": "verification/team2/06_suggestion_control.png",
+      "bytes": 154988,
+      "sha256": "8b9c3e349ff0d84430569b5229fdb7a9b7d5bf5c414b8cdefe24cf4d3611eab2"
+    },
+    {
+      "path": "verification/team2/07_result_arena.png",
+      "bytes": 462279,
+      "sha256": "9e0ded317ce7ab1af5b025bed7cc8c8f36a591f473b8dabb4d50caf4b7d2c06c"
+    },
+    {
+      "path": "verification/team2/07_result_control.png",
+      "bytes": 176205,
+      "sha256": "5eb0ba8b22031a927bda1bf252494e88d1ef7f289b3f86f6d7c43b653c034338"
+    },
+    {
+      "path": "verification/team2/report.json",
+      "bytes": 635,
+      "sha256": "d0560b2027903eed550da456c53695320f1d2a6585f04f52f7d1a877bdd457ad"
+    },
+    {
+      "path": "verification/tests.log",
+      "bytes": 567,
+      "sha256": "e264ca1a1e832f8689f0737dd78126e735607b779fe0e615dcfab414805820b0"
+    },
+    {
+      "path": "verification/transparency.json",
+      "bytes": 3095,
+      "sha256": "bba9f64ef23414879cfeaa56a7b6853a87c86bee205a7885f701060cb922091f"
+    }
+  ]
+}

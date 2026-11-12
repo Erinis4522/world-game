@@ -1,0 +1,195 @@
+{
+	"images": [
+		{
+			"file": "monsters/normal/east_a.png",
+			"opaque_samples": 1489,
+			"passed": true,
+			"size": [
+				448,
+				380
+			],
+			"transparent_samples": 1125
+		},
+		{
+			"file": "monsters/normal/east_b.png",
+			"opaque_samples": 1475,
+			"passed": true,
+			"size": [
+				463,
+				382
+			],
+			"transparent_samples": 1235
+		},
+		{
+			"file": "monsters/normal/south.png",
+			"opaque_samples": 1328,
+			"passed": true,
+			"size": [
+				378,
+				439
+			],
+			"transparent_samples": 1245
+		},
+		{
+			"file": "monsters/normal/north.png",
+			"opaque_samples": 1219,
+			"passed": true,
+			"size": [
+				379,
+				379
+			],
+			"transparent_samples": 1032
+		},
+		{
+			"file": "monsters/fast/east_a.png",
+			"opaque_samples": 1059,
+			"passed": true,
+			"size": [
+				552,
+				336
+			],
+			"transparent_samples": 1377
+		},
+		{
+			"file": "monsters/fast/east_b.png",
+			"opaque_samples": 997,
+			"passed": true,
+			"size": [
+				545,
+				336
+			],
+			"transparent_samples": 1483
+		},
+		{
+			"file": "monsters/fast/south.png",
+			"opaque_samples": 828,
+			"passed": true,
+			"size": [
+				293,
+				468
+			],
+			"transparent_samples": 1067
+		},
+		{
+			"file": "monsters/fast/north.png",
+			"opaque_samples": 846,
+			"passed": true,
+			"size": [
+				344,
+				466
+			],
+			"transparent_samples": 1450
+		},
+		{
+			"file": "monsters/armored/east_a.png",
+			"opaque_samples": 1844,
+			"passed": true,
+			"size": [
+				555,
+				388
+			],
+			"transparent_samples": 1526
+		},
+		{
+			"file": "monsters/armored/east_b.png",
+			"opaque_samples": 1827,
+			"passed": true,
+			"size": [
+				541,
+				393
+			],
+			"transparent_samples": 1506
+		},
+		{
+			"file": "monsters/armored/south.png",
+			"opaque_samples": 1772,
+			"passed": true,
+			"size": [
+				474,
+				465
+			],
+			"transparent_samples": 1689
+		},
+		{
+			"file": "monsters/armored/north.png",
+			"opaque_samples": 1748,
+			"passed": true,
+			"size": [
+				443,
+				435
+			],
+			"transparent_samples": 1269
+		},
+		{
+			"file": "monsters/boss/east_a.png",
+			"opaque_samples": 2148,
+			"passed": true,
+			"size": [
+				526,
+				509
+			],
+			"transparent_samples": 1986
+		},
+		{
+			"file": "monsters/boss/east_b.png",
+			"opaque_samples": 2207,
+			"passed": true,
+			"size": [
+				531,
+				503
+			],
+			"transparent_samples": 1929
+		},
+		{
+			"file": "monsters/boss/south.png",
+			"opaque_samples": 2264,
+			"passed": true,
+			"size": [
+				459,
+				555
+			],
+			"transparent_samples": 1699
+		},
+		{
+			"file": "monsters/boss/north.png",
+			"opaque_samples": 2210,
+			"passed": true,
+			"size": [
+				537,
+				548
+			],
+			"transparent_samples": 2396
+		},
+		{
+			"file": "runtime/map/base.png",
+			"opaque_samples": 9724,
+			"passed": true,
+			"size": [
+				807,
+				1074
+			],
+			"transparent_samples": 3794
+		},
+		{
+			"file": "runtime/map/spawn.png",
+			"opaque_samples": 9435,
+			"passed": true,
+			"size": [
+				881,
+				1037
+			],
+			"transparent_samples": 4914
+		},
+		{
+			"file": "runtime/map/slot.png",
+			"opaque_samples": 8893,
+			"passed": true,
+			"size": [
+				1074,
+				606
+			],
+			"transparent_samples": 1280
+		}
+	],
+	"passed": true
+}

@@ -1,0 +1,202 @@
+{
+  "attachments": {
+    "cast": {
+      "position": [
+        950,
+        235
+      ],
+      "part": "staff"
+    }
+  },
+  "part_layers": [
+    {
+      "pivot": [
+        620,
+        730
+      ],
+      "draw_bounds": [
+        382,
+        685,
+        459,
+        270
+      ],
+      "parent": "torso",
+      "name": "coat_back",
+      "z": 0
+    },
+    {
+      "pivot": [
+        695,
+        800
+      ],
+      "draw_bounds": [
+        606,
+        747,
+        227,
+        480
+      ],
+      "parent": null,
+      "name": "leg_far",
+      "z": 1
+    },
+    {
+      "pivot": [
+        605,
+        800
+      ],
+      "draw_bounds": [
+        318,
+        721,
+        344,
+        530
+      ],
+      "parent": null,
+      "name": "leg_near",
+      "z": 2
+    },
+    {
+      "pivot": [
+        710,
+        540
+      ],
+      "draw_bounds": [
+        653,
+        491,
+        234,
+        193
+      ],
+      "parent": "torso",
+      "name": "upper_arm_far",
+      "z": 3
+    },
+    {
+      "pivot": [
+        775,
+        635
+      ],
+      "draw_bounds": [
+        681,
+        496,
+        261,
+        189
+      ],
+      "parent": "upper_arm_far",
+      "name": "forearm_far",
+      "z": 3
+    },
+    {
+      "pivot": [
+        883,
+        567
+      ],
+      "draw_bounds": [
+        773,
+        35,
+        287,
+        1109
+      ],
+      "parent": "forearm_far",
+      "name": "staff",
+      "z": 2
+    },
+    {
+      "pivot": [
+        625,
+        760
+      ],
+      "draw_bounds": [
+        342,
+        412,
+        515,
+        540
+      ],
+      "parent": null,
+      "name": "torso",
+      "z": 4
+    },
+    {
+      "pivot": [
+        525,
+        540
+      ],
+      "draw_bounds": [
+        377,
+        493,
+        203,
+        206
+      ],
+      "parent": "torso",
+      "name": "upper_arm_near",
+      "z": 6
+    },
+    {
+      "pivot": [
+        440,
+        630
+      ],
+      "draw_bounds": [
+        247,
+        559,
+        240,
+        143
+      ],
+      "parent": "upper_arm_near",
+      "name": "forearm_near",
+      "z": 9
+    },
+    {
+      "pivot": [
+        640,
+        437
+      ],
+      "draw_bounds": [
+        371,
+        97,
+        449,
+        374
+      ],
+      "parent": "head_face",
+      "name": "hair_back",
+      "z": 5
+    },
+    {
+      "pivot": [
+        640,
+        437
+      ],
+      "draw_bounds": [
+        452,
+        131,
+        319,
+        341
+      ],
+      "parent": "torso",
+      "name": "head_face",
+      "z": 10
+    },
+    {
+      "pivot": [
+        640,
+        437
+      ],
+      "draw_bounds": [
+        360,
+        98,
+        469,
+        375
+      ],
+      "parent": "head_face",
+      "name": "hair_front",
+      "z": 11
+    }
+  ],
+  "canvas_size": [
+    1280,
+    1280
+  ],
+  "anchor": [
+    575,
+    1245
+  ],
+  "character_id": "ice_operator"
+}

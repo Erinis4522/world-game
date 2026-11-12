@@ -1,0 +1,121 @@
+{
+  "map_assets": [
+    "background",
+    "base",
+    "spawn",
+    "slot"
+  ],
+  "monster_types": 4,
+  "directional_frames": 16,
+  "logic_checks_passed": 914,
+  "logic_checks_failed": 0,
+  "road_samples": 78,
+  "alpha_images_checked": 19,
+  "map_geometry_unchanged": true,
+  "enemy_combat_stats_unchanged": true,
+  "battle_runs": [
+    {
+      "attacks": {
+        "FIRE": 71,
+        "ICE": 112,
+        "LIGHTNING": 25
+      },
+      "enemy_types": [
+        "NORMAL",
+        "FAST",
+        "ARMORED",
+        "BOSS"
+      ],
+      "enemy_views": [
+        "NORMAL_1",
+        "NORMAL_0",
+        "NORMAL_2",
+        "FAST_0",
+        "FAST_1",
+        "FAST_2",
+        "ARMORED_0",
+        "ARMORED_1",
+        "FAST_3",
+        "ARMORED_2",
+        "NORMAL_3",
+        "ARMORED_3",
+        "BOSS_1",
+        "BOSS_0",
+        "BOSS_2",
+        "BOSS_3"
+      ],
+      "facing": [
+        "ICE_left",
+        "FIRE_left",
+        "FIRE_right",
+        "ICE_right",
+        "LIGHTNING_right"
+      ],
+      "outcome": "win",
+      "result_reached": true,
+      "specials": {
+        "FIRE": 23,
+        "ICE": 24,
+        "LIGHTNING": 1
+      },
+      "suggestion_checked": true,
+      "team": [
+        "FIRE",
+        "ICE",
+        "LIGHTNING"
+      ]
+    },
+    {
+      "attacks": {
+        "BOMB": 51,
+        "MARK": 122,
+        "SWORD": 44
+      },
+      "enemy_types": [
+        "NORMAL",
+        "FAST",
+        "ARMORED",
+        "BOSS"
+      ],
+      "enemy_views": [
+        "NORMAL_1",
+        "NORMAL_0",
+        "NORMAL_2",
+        "FAST_0",
+        "FAST_1",
+        "FAST_2",
+        "ARMORED_0",
+        "ARMORED_1",
+        "FAST_3",
+        "ARMORED_2",
+        "ARMORED_3",
+        "NORMAL_3",
+        "BOSS_1",
+        "BOSS_0",
+        "BOSS_2",
+        "BOSS_3"
+      ],
+      "facing": [
+        "BOMB_left",
+        "MARK_left",
+        "BOMB_right",
+        "SWORD_right",
+        "MARK_right"
+      ],
+      "outcome": "win",
+      "result_reached": true,
+      "specials": {
+        "BOMB": 14,
+        "MARK": 22,
+        "SWORD": 6
+      },
+      "suggestion_checked": true,
+      "team": [
+        "BOMB",
+        "MARK",
+        "SWORD"
+      ]
+    }
+  ],
+  "remote_pushed": false
+}

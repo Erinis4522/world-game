@@ -1,0 +1,24 @@
+# Godot caches and local export credentials
+**/.godot/
+**/.mono/
+**/.godot/export_credentials.cfg
+**/export_credentials.cfg
+
+# Original archives and Windows binaries are preserved in GitHub Releases.
+/AIDefense.exe
+/AIDefense.pck
+/source.zip
+/releases/
+/build/
+/tools/godot/
+
+# Local secrets and operating-system files
+.env
+.env.*
+!.env.example
+*.pem
+*.pfx
+*.p12
+.DS_Store
+Thumbs.db
+desktop.ini

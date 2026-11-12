@@ -1,0 +1,51 @@
+{
+	"attacks": {
+		"BOMB": 51,
+		"MARK": 122,
+		"SWORD": 44
+	},
+	"enemy_types": [
+		"NORMAL",
+		"FAST",
+		"ARMORED",
+		"BOSS"
+	],
+	"enemy_views": [
+		"NORMAL_1",
+		"NORMAL_0",
+		"NORMAL_2",
+		"FAST_0",
+		"FAST_1",
+		"FAST_2",
+		"ARMORED_0",
+		"ARMORED_1",
+		"FAST_3",
+		"ARMORED_2",
+		"ARMORED_3",
+		"NORMAL_3",
+		"BOSS_1",
+		"BOSS_0",
+		"BOSS_2",
+		"BOSS_3"
+	],
+	"facing": [
+		"BOMB_left",
+		"MARK_left",
+		"BOMB_right",
+		"SWORD_right",
+		"MARK_right"
+	],
+	"outcome": "win",
+	"result_reached": true,
+	"specials": {
+		"BOMB": 14,
+		"MARK": 22,
+		"SWORD": 6
+	},
+	"suggestion_checked": true,
+	"team": [
+		"BOMB",
+		"MARK",
+		"SWORD"
+	]
+}

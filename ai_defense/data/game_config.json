@@ -1,0 +1,164 @@
+{
+	"tick_hz": 30,
+	"base_hp": 10,
+	"enemy_speed_scale": 1.25,
+	"danger_ref_speed": 1.8,
+	"wave_gap_seconds": 4,
+	"max_enemies": 40,
+	"default_principle": "NEAREST",
+	"principle_order": [
+		"NEAREST",
+		"DANGER",
+		"SPECIAL"
+	],
+	"principles": {
+		"NEAREST": {
+			"name": "가까운 적 우선",
+			"desc": "내 앞에 가장 가까이 온 적부터",
+			"w_distance": 0.7,
+			"w_danger": 0.2,
+			"w_special": 0.1
+		},
+		"DANGER": {
+			"name": "위험한 적 우선",
+			"desc": "기지에 가장 가까이 간 적부터",
+			"w_distance": 0.1,
+			"w_danger": 0.7,
+			"w_special": 0.2
+		},
+		"SPECIAL": {
+			"name": "특기 활용",
+			"desc": "내 특기가 가장 잘 통하는 적부터",
+			"w_distance": 0.1,
+			"w_danger": 0.1,
+			"w_special": 0.8
+		}
+	},
+	"crisis": {
+		"single_progress": 0.75,
+		"single_eta_seconds": 8,
+		"group_progress": 0.65,
+		"group_count": 3
+	},
+	"suggestion": {
+		"min_gap_seconds": 18,
+		"timeout_seconds": 30,
+		"horizon_seconds": 10,
+		"replay_seconds": 12,
+		"damage_weight": 100,
+		"min_improvement_abs": 0.6,
+		"min_improvement_ratio": 0.08,
+		"repeat_keep_ratio": 0.8
+	},
+	"speech": {
+		"hero_cooldown": 15,
+		"global_cooldown": 7,
+		"display_seconds": 2.2,
+		"eval_interval": 0.25,
+		"base_danger_progress": 0.85,
+		"recent_window": 1.0
+	},
+	"timers": {
+		"idle_reset_seconds": 75,
+		"result_auto_reset_seconds": 30,
+		"suggestion_idle_reset_seconds": 90
+	},
+	"score": {
+		"per_second": 10,
+		"per_hp": 50,
+		"per_kill": 5,
+		"win_bonus": 300
+	},
+	"recommended_team": [
+		{
+			"type": "SWORD",
+			"slot": 3
+		},
+		{
+			"type": "ARCHER",
+			"slot": 5
+		},
+		{
+			"type": "ICE",
+			"slot": 6
+		}
+	],
+	"map": {
+		"width": 20,
+		"height": 11.25,
+		"path": [
+			[
+				-0.5,
+				2.0
+			],
+			[
+				6.0,
+				2.0
+			],
+			[
+				6.0,
+				8.0
+			],
+			[
+				12.0,
+				8.0
+			],
+			[
+				12.0,
+				3.0
+			],
+			[
+				17.0,
+				3.0
+			],
+			[
+				17.0,
+				9.6
+			]
+		],
+		"slots": [
+			[
+				3.0,
+				3.0
+			],
+			[
+				7.0,
+				3.0
+			],
+			[
+				5.0,
+				5.0
+			],
+			[
+				7.0,
+				7.0
+			],
+			[
+				9.0,
+				9.0
+			],
+			[
+				9.0,
+				5.0
+			],
+			[
+				11.0,
+				4.0
+			],
+			[
+				13.0,
+				6.5
+			],
+			[
+				16.0,
+				7.5
+			],
+			[
+				18.0,
+				5.0
+			]
+		],
+		"background_includes_path": true,
+		"art_theme": "research_perimeter"
+	}
+}

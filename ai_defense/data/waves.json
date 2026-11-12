@@ -1,0 +1,33 @@
+{
+	"waves": [
+		{
+			"name": "웨이브 1", "duration": 45,
+			"groups": [
+				{"type": "NORMAL", "count": 8, "start": 1.0, "interval": 2.5},
+				{"type": "FAST", "count": 3, "start": 18.0, "interval": 1.2},
+				{"type": "NORMAL", "count": 6, "start": 26.0, "interval": 1.6}
+			]
+		},
+		{
+			"name": "웨이브 2", "duration": 50,
+			"groups": [
+				{"type": "NORMAL", "count": 6, "start": 0.0, "interval": 2.0},
+				{"type": "FAST", "count": 6, "start": 9.0, "interval": 0.6},
+				{"type": "ARMORED", "count": 2, "start": 14.0, "interval": 8.0},
+				{"type": "NORMAL", "count": 6, "start": 24.0, "interval": 1.2},
+				{"type": "FAST", "count": 5, "start": 34.0, "interval": 0.6}
+			]
+		},
+		{
+			"name": "웨이브 3", "duration": 60,
+			"groups": [
+				{"type": "NORMAL", "count": 8, "start": 0.0, "interval": 1.6},
+				{"type": "BOSS", "count": 1, "start": 6.0, "interval": 1.0},
+				{"type": "FAST", "count": 6, "start": 14.0, "interval": 0.6},
+				{"type": "ARMORED", "count": 3, "start": 20.0, "interval": 5.0},
+				{"type": "NORMAL", "count": 10, "start": 30.0, "interval": 1.0},
+				{"type": "FAST", "count": 6, "start": 42.0, "interval": 0.5}
+			]
+		}
+	]
+}

@@ -1,0 +1,179 @@
+{
+	"anchor": [
+		590.0,
+		1237.0
+	],
+	"animation_profile": "melee",
+	"attachments": {
+		"cast": {
+			"part": "weapon",
+			"position": [
+				1084.0,
+				178.0
+			]
+		}
+	},
+	"canvas_size": [
+		1280,
+		1280
+	],
+	"character_id": "sword",
+	"part_layers": [
+		{
+			"canvas_offset": [
+				335.0,
+				480.0
+			],
+			"name": "coat_back",
+			"parent": "torso",
+			"pivot": [
+				615.0,
+				795.0
+			],
+			"z": 0
+		},
+		{
+			"canvas_offset": [
+				384.0,
+				85.0
+			],
+			"name": "hair_back",
+			"parent": "head_face",
+			"pivot": [
+				635.0,
+				470.0
+			],
+			"z": 1
+		},
+		{
+			"canvas_offset": [
+				631.0,
+				783.0
+			],
+			"name": "leg_far",
+			"parent": null,
+			"pivot": [
+				690.0,
+				804.0
+			],
+			"z": 2
+		},
+		{
+			"canvas_offset": [
+				374.0,
+				785.0
+			],
+			"name": "leg_near",
+			"parent": null,
+			"pivot": [
+				591.0,
+				805.0
+			],
+			"z": 3
+		},
+		{
+			"canvas_offset": [
+				820.0,
+				130.0
+			],
+			"name": "weapon",
+			"parent": "forearm_far",
+			"pivot": [
+				872.0,
+				629.0
+			],
+			"z": 4
+		},
+		{
+			"canvas_offset": [
+				725.0,
+				548.0
+			],
+			"name": "upper_arm_far",
+			"parent": "torso",
+			"pivot": [
+				744.0,
+				562.0
+			],
+			"z": 5
+		},
+		{
+			"canvas_offset": [
+				760.0,
+				573.0
+			],
+			"name": "forearm_far",
+			"parent": "upper_arm_far",
+			"pivot": [
+				795.0,
+				683.0
+			],
+			"z": 6
+		},
+		{
+			"canvas_offset": [
+				442.0,
+				442.0
+			],
+			"name": "torso",
+			"parent": null,
+			"pivot": [
+				615.0,
+				795.0
+			],
+			"z": 7
+		},
+		{
+			"canvas_offset": [
+				367.0,
+				510.0
+			],
+			"name": "upper_arm_near",
+			"parent": "torso",
+			"pivot": [
+				509.0,
+				535.0
+			],
+			"z": 8
+		},
+		{
+			"canvas_offset": [
+				370.0,
+				690.0
+			],
+			"name": "forearm_near",
+			"parent": "upper_arm_near",
+			"pivot": [
+				428.0,
+				708.0
+			],
+			"z": 9
+		},
+		{
+			"canvas_offset": [
+				490.0,
+				180.0
+			],
+			"name": "head_face",
+			"parent": "torso",
+			"pivot": [
+				635.0,
+				470.0
+			],
+			"z": 10
+		},
+		{
+			"canvas_offset": [
+				384.0,
+				75.0
+			],
+			"name": "hair_front",
+			"parent": "head_face",
+			"pivot": [
+				635.0,
+				470.0
+			],
+			"z": 11
+		}
+	]
+}
