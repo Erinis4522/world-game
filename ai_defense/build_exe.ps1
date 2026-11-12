@@ -40,6 +40,11 @@ if (-not $SkipTests) {
         Write-Host "테스트 실패로 멈춥니다. 위의 ✗ 줄을 확인하세요." -ForegroundColor Red
         exit 1
     }
+    & $godot --headless --path $project --script res://tests/sv_tests.gd
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "3D 서바이벌 테스트 실패로 멈춥니다. 위의 ✗ 줄을 확인하세요." -ForegroundColor Red
+        exit 1
+    }
 } else {
     Write-Host "[2/3] 테스트 건너뜀" -ForegroundColor Yellow
 }
