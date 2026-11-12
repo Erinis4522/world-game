@@ -73,15 +73,23 @@ static func from_config() -> SvGrid:
 				var cc: Vector2i = c + Vector2i(dx, dy)
 				if g.inside(cc) and g.road[g.idx(cc)] == 0:
 					g._set_perm(cc, "building")
+	# 마을 성벽 줄 (성문 = 기지 칸만 열려 있음)
+	if m.has("town_wall_y"):
+		var wy := int(m["town_wall_y"])
+		for i in g.w:
+			var wc := Vector2i(i, wy)
+			if not g.is_perm_blocked(wc):
+				g._set_perm(wc, "townwall")
 	# 숲: 길에서 조금 떨어진 곳, 마을 밖, 결정적 무작위
 	var dens := float(m.get("forest_density", 0.2))
 	var seed_v := int(m.get("forest_seed", 1))
 	var margin := half + float(m.get("forest_road_margin", 2))
 	var vr := float(m.get("village_radius", 8))
+	var vy := int(m.get("village_y", g.h))
 	for j in g.h:
 		for i in g.w:
 			var ix := j * g.w + i
-			if g.blocked[ix] == 1 or road_d[ix] <= margin:
+			if g.blocked[ix] == 1 or road_d[ix] <= margin or j >= vy:
 				continue
 			var c := Vector2(i + 0.5, j + 0.5)
 			if c.distance_to(bc) < vr:
@@ -427,3 +435,31 @@ func path_length(from: Vector2, to: Vector2) -> float:
 	if p.is_empty() or p[p.size() - 1].distance_to(to) > 1.5:
 		return INF_D
 	return l
+
+
+func walk_steps(from: Vector2, to: Vector2) -> float:
+	## 아군 걸음 수 (벽·숲·건물 피해서, BFS). 막혀서 못 가면 INF_D
+	var s := nearest_open(cell_of(from))
+	var t := nearest_open(cell_of(clamp_to_map(to)))
+	var dist := PackedInt32Array()
+	dist.resize(w * h)
+	dist.fill(-1)
+	var q := PackedInt32Array([idx(s)])
+	dist[idx(s)] = 0
+	var head := 0
+	var ti := idx(t)
+	while head < q.size():
+		var ci := q[head]
+		head += 1
+		if ci == ti:
+			return float(dist[ci])
+		var c := Vector2i(ci % w, ci / w)
+		for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+			var n: Vector2i = c + d
+			if is_blocked(n):
+				continue
+			var ni := idx(n)
+			if dist[ni] < 0:
+				dist[ni] = dist[ci] + 1
+				q.append(ni)
+	return INF_D

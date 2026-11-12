@@ -22,7 +22,8 @@ var _base_glow: MeshInstance3D
 var _base_flash := -10.0
 var now := 0.0
 
-const CAM_OFFSET := Vector3(0, 13.5, 10.5)
+const CAM_OFFSET := Vector3(0, 17.0, 12.5)
+var _far_hide := 26.0
 
 
 func setup(c: SvController) -> void:
@@ -34,6 +35,7 @@ func setup(c: SvController) -> void:
 func _ready() -> void:
 	SvData.ensure_loaded()
 	var sz := SvData.map_size()
+	_far_hide = float(SvData.cfg.get("far_hide_distance", 26))
 	var env := WorldEnvironment.new()
 	var e := Environment.new()
 	e.background_mode = Environment.BG_COLOR
@@ -92,7 +94,10 @@ func _build_terrain(root: Node3D, sz: Vector2) -> void:
 	grass.size = sz
 	SvModels.part(root, grass, SvModels.mat(SvModels.c("#7dbb5a")), Vector3(sz.x * 0.5, -0.01, sz.y * 0.5))
 	var bc := SvData.base_center()
-	SvModels.part(root, SvModels.cyl(7.5, 7.5, 0.02, 32), SvModels.mat(SvModels.c("#c9c1ad")), Vector3(bc.x, 0.0, bc.y))
+	var vy := float(SvData.cfg["map"].get("village_y", sz.y))
+	var plaza := PlaneMesh.new()
+	plaza.size = Vector2(sz.x, sz.y - vy)
+	SvModels.part(root, plaza, SvModels.mat(SvModels.c("#c9c1ad")), Vector3(sz.x * 0.5, 0.0, vy + (sz.y - vy) * 0.5))  # 마을 바닥
 	var width := float(SvData.cfg["map"].get("road_width", 3))
 	for r in SvData.roads():
 		var pts := SvData.road_points(r)
@@ -133,7 +138,17 @@ func _build_terrain(root: Node3D, sz: Vector2) -> void:
 		n.rotation.y = deg_to_rad(float(p.get("rot", 0)))
 		n.scale = Vector3.ONE * float(p.get("scale", 2.0))
 		root.add_child(n)
-	_base_glow = SvModels.part(root, SvModels.cyl(4.2, 4.2, 0.02, 32), SvModels.mat(Color(0.35, 0.95, 0.9, 0.35), 0.8, true), Vector3(bc.x, 0.03, bc.y))
+	for cell in g.kind.keys():
+		if g.kind[cell] == "townwall":
+			var wn := SvModels.prop("wall_straight")
+			wn.position = w3(g.center_of(cell))
+			wn.scale = Vector3(0.55, 1.6, 1.2)
+			root.add_child(wn)
+	_base_glow = SvModels.part(root, SvModels.cyl(3.2, 3.2, 0.02, 32), SvModels.mat(Color(0.35, 0.95, 0.9, 0.35), 0.8, true), Vector3(bc.x, 0.03, bc.y - 1.0))
+	var gate_arch := SvModels.prop("wall_straight_gate")
+	gate_arch.position = w3(bc)
+	gate_arch.scale = Vector3(1.6, 1.8, 1.4)
+	root.add_child(gate_arch)
 
 
 func _multimesh(root: Node3D, model: String, cells: Array, scale: float, jitter: float) -> void:
@@ -246,6 +261,13 @@ func _sync(st: SvState, a: float) -> void:
 			_enemies[e.id] = _pool_take(e.type)
 		var eu: SvModels.Unit = _enemies[e.id]
 		eu.root.position = w3(e.prev_pos.lerp(e.pos, a))
+		# 카메라에서 먼 적은 숨기고 애니메이션도 멈춤 (내장그래픽·CPU 부담 줄이기)
+		var far := Vector2(eu.root.position.x - _cam_target.x, eu.root.position.z - _cam_target.z).length() > _far_hide
+		eu.root.visible = not far
+		if eu.anim != null:
+			eu.anim.active = not far
+		if far:
+			continue
 		eu.root.rotation.y = lerp_angle(eu.root.rotation.y, atan2(e.facing.x, e.facing.y), 0.3)
 		if eu.anim != null:
 			eu.anim.speed_scale = maxf(controller.time_scale, 0.05)
@@ -290,6 +312,8 @@ func _pool_take(type: String) -> SvModels.Unit:
 		var u: SvModels.Unit = pool.pop_back()
 		u.root.visible = true
 		u.lock_until = 0.0
+		if u.anim != null:
+			u.anim.active = true
 		u.current = ""
 		return u
 	var nu := SvModels.enemy_unit(type)
@@ -403,23 +427,36 @@ func _on_events(events: Array) -> void:
 				var col := Color.from_string(str(SvData.hero(ev["hero_type"]).get("color", "#ffffff")), Color.WHITE).lightened(0.25)
 				var from: Vector2 = ev["from"]
 				var pts: Array = ev["points"]
-				match ev["hero_type"]:
-					"LIGHTNING":
+				var center: Vector2 = ev.get("center", pts[0])
+				var rad := float(ev.get("radius", 0.0))
+				# 광역 공격이 한눈에 보이도록: 모양별 효과
+				match str(ev.get("fx", "shot")):
+					"chain":
 						var prev := from
 						for p in pts:
-							_beam(prev, p, Color("#e6d2ff"), 0.08, 0.18)
+							_beam(prev, p, Color("#e6d2ff"), 0.12, 0.25)
+							_ring(p, 0.7, Color("#d9c2ff"), 0.25)
 							prev = p
-					"SWORD", "PLAYER", "BUILDER":
-						for p in pts:
-							_burst(p, Color("#f2f6ff"), 0.5, 0.16)
-					"BOMB", "FIRE":
-						pass
-					"SNIPER":
-						_beam(from, pts[0], Color("#fff2c2"), 0.07, 0.3)
+					"slash":
+						_slash(from, center, rad, Color("#f2f6ff") if ev["hero_type"] != "PLAYER" else Color("#ffe58a"))
+					"pierce":
+						_beam(from, pts[0], Color("#fff2c2"), 0.18, 0.35)
+						_beam(from, pts[0], Color(1, 1, 1), 0.07, 0.2)
+					"blast":
+						if ev["hero_type"] == "FIRE":
+							_bolt(from, center, Color("#ff9a3c"), 0.18, 0.3)
+							_ring(center, rad, Color("#ff7a1a"), 0.45, 0.18)
+							_burst(center, Color("#ffb35c"), rad * 0.9, 0.35, 0.18)
+					"nova":
+						_bolt(from, center, col, 0.12, 0.25)
+						_ring(center, rad, col, 0.45, 0.12)
 					_:
-						_beam(from, pts[0], col, 0.05, 0.16)
+						_bolt(from, center, col, 0.1, 0.18)
+						if rad > 0.0:
+							_ring(center, rad, col, 0.35, 0.1)
 			"EXPLODE":
-				_burst(ev["pos"], Color("#ff8a2e") if ev.get("kind", "") == "FIRE" else Color("#ffd27a"), float(ev["radius"]), 0.35)
+				_ring(ev["pos"], float(ev["radius"]), Color("#ffcf6a"), 0.45)
+				_burst(ev["pos"], Color("#ff8a2e") if ev.get("kind", "") == "FIRE" else Color("#ffd27a"), float(ev["radius"]), 0.4)
 			"KILL":
 				_burst(ev["pos"], Color("#cfe8ff"), 0.6, 0.3)
 			"BASE_HIT":
@@ -478,29 +515,86 @@ func _beam(a: Vector2, b: Vector2, col: Color, width: float, dur: float) -> void
 	_fx.append({"node": n, "t0": now, "dur": dur, "kind": "beam", "col": col})
 
 
-func _burst(p: Vector2, col: Color, radius: float, dur: float) -> void:
+static var _sphere_mesh: SphereMesh
+static var _ring_mesh: TorusMesh
+
+
+func _burst(p: Vector2, col: Color, radius: float, dur: float, delay := 0.0) -> void:
+	if _sphere_mesh == null:
+		_sphere_mesh = SvModels.sphere(1.0, 12, 6)
 	var n := _fx_node()
-	n.mesh = SvModels.sphere(1.0, 12, 6)
+	n.mesh = _sphere_mesh
 	n.rotation = Vector3.ZERO
 	n.position = w3(p, 0.3)
 	n.scale = Vector3.ONE * radius * 0.4
 	(n.material_override as StandardMaterial3D).albedo_color = col
-	_fx.append({"node": n, "t0": now, "dur": dur, "kind": "burst", "col": col, "r": radius})
+	_fx.append({"node": n, "t0": now + delay, "dur": dur, "kind": "burst", "col": col, "r": radius})
+
+
+func _ring(p: Vector2, radius: float, col: Color, dur: float, delay := 0.0) -> void:
+	## 바닥에 퍼지는 충격파 고리 — 광역 공격 범위를 그대로 보여 줌
+	if _ring_mesh == null:
+		_ring_mesh = TorusMesh.new()
+		_ring_mesh.inner_radius = 0.82
+		_ring_mesh.outer_radius = 1.0
+		_ring_mesh.rings = 32
+		_ring_mesh.ring_segments = 4
+	var n := _fx_node()
+	n.mesh = _ring_mesh
+	n.rotation = Vector3.ZERO
+	n.position = w3(p, 0.12)
+	n.scale = Vector3(radius * 0.3, 0.2, radius * 0.3)
+	(n.material_override as StandardMaterial3D).albedo_color = col
+	_fx.append({"node": n, "t0": now + delay, "dur": dur, "kind": "ring", "col": col, "r": maxf(radius, 0.4)})
+
+
+func _slash(from: Vector2, center: Vector2, radius: float, col: Color) -> void:
+	## 휘두르기: 표적 쪽 넓은 고리 + 섬광
+	_ring(center, maxf(radius, 0.8), col, 0.35)
+	_burst(center, col, maxf(radius, 0.8) * 0.7, 0.26)
+	_beam(from, center, col, 0.12, 0.18)
+
+
+func _bolt(from: Vector2, to: Vector2, col: Color, size: float, dur: float) -> void:
+	## 날아가는 탄 (불덩이·화살·마법탄)
+	if _sphere_mesh == null:
+		_sphere_mesh = SvModels.sphere(1.0, 12, 6)
+	var n := _fx_node()
+	n.mesh = _sphere_mesh
+	n.rotation = Vector3.ZERO
+	n.scale = Vector3.ONE * size
+	n.position = w3(from, 0.9)
+	(n.material_override as StandardMaterial3D).albedo_color = col
+	_fx.append({"node": n, "t0": now, "dur": dur, "kind": "bolt", "col": col, "from": from, "to": to})
 
 
 func _update_fx() -> void:
 	var keep: Array = []
 	for f in _fx:
-		var k := (now - float(f["t0"])) / float(f["dur"])
 		var n: MeshInstance3D = f["node"]
+		if now < float(f["t0"]):
+			n.visible = false
+			keep.append(f)
+			continue
+		n.visible = true
+		var k := (now - float(f["t0"])) / float(f["dur"])
 		if k >= 1.0:
 			n.visible = false
 			_fx_pool.append(n)
 			continue
 		var col: Color = f["col"]
-		col.a = (1.0 - k) * 0.8
+		col.a = (1.0 - k * k) * 0.85
 		(n.material_override as StandardMaterial3D).albedo_color = col
-		if f["kind"] == "burst":
-			n.scale = Vector3(1, 0.5, 1) * float(f["r"]) * (0.4 + 0.6 * k)
+		match f["kind"]:
+			"burst":
+				n.scale = Vector3(1, 0.5, 1) * float(f["r"]) * (0.4 + 0.6 * k)
+			"ring":
+				var r := float(f["r"]) * (0.3 + 0.75 * k)
+				n.scale = Vector3(r, 0.25, r)
+			"bolt":
+				var p: Vector2 = (f["from"] as Vector2).lerp(f["to"], k)
+				n.position = w3(p, 0.9 - 0.4 * k + sin(k * PI) * 0.6)
+				col.a = 1.0
+				(n.material_override as StandardMaterial3D).albedo_color = col
 		keep.append(f)
 	_fx = keep

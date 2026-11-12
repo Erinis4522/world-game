@@ -116,20 +116,11 @@ func _draw_battle() -> void:
 		var p := world.screen_pos(hp2, 1.9)
 		var name := "나" if h.role == "player" else SvData.person(h.type)
 		var col := Color(1, 0.9, 0.4) if h.role == "player" else Color.WHITE
-		_text(name, p + Vector2(0, -12), 22, col, HORIZONTAL_ALIGNMENT_CENTER, true)
+		_text(name, p + Vector2(0, -12), 18, col, HORIZONTAL_ALIGNMENT_CENTER, true)
 		var r: float = h.hp / h.max_hp
 		draw_rect(Rect2(p + Vector2(-30, -6), Vector2(60, 7)), Color(0, 0, 0, 0.6))
 		draw_rect(Rect2(p + Vector2(-30, -6), Vector2(60 * r, 7)), Color(0.35, 0.9, 0.45) if r > 0.35 else Color(0.95, 0.4, 0.3))
-	for b in s.bubbles:
-		var h: SvState.SvHero = st.heroes[b["hero"]]
-		if not h.alive():
-			continue
-		var who := "나" if h.role == "player" else SvData.person(h.type)
-		var bp: Vector2 = h.prev_pos.lerp(h.pos, a)
-		if world.on_screen(bp, 2.3):
-			_bubble(world.screen_pos(bp, 2.3), "%s: %s" % [who, b["text"]])
-		else:
-			_bubble(Vector2(size.x * 0.5, size.y - 90), "%s (멀리서): %s" % [who, b["text"]])
+	_draw_dialog(s)
 	_draw_topbar(st)
 	_draw_minimap(st)
 	if banner_until > now:
@@ -144,13 +135,13 @@ func _draw_battle() -> void:
 		"principle":
 			draw_rect(Rect2(Vector2.ZERO, size), Color(0.1, 0.15, 0.3, 0.18))
 			_text("시간이 느려졌어요 — 아래 터치 화면에서 %s의 행동 원칙을 골라요" % SvData.person(st.heroes[controller.overlay_hero].type),
-				Vector2(size.x * 0.5, size.y - 40), 30, Color(0.85, 0.95, 1.0), HORIZONTAL_ALIGNMENT_CENTER, true)
+				Vector2(size.x * 0.5, 150), 30, Color(0.85, 0.95, 1.0), HORIZONTAL_ALIGNMENT_CENTER, true)
 		"sketch":
 			draw_rect(Rect2(Vector2.ZERO, size), Color(0, 0, 0, 0.22))
 			var msg := "잠깐 멈춤 — 아래 터치 화면에 그림을 그려요"
 			if s.proposal.get("ok", false):
 				msg = "AI 제안 미리보기: %s — 터치 화면에서 승인하면 실행돼요" % ("벽 %d칸" % s.proposal["cells"].size() if s.proposal["kind"] == "WALL" else s.proposal["name"])
-			_text(msg, Vector2(size.x * 0.5, size.y - 40), 30, Color(1, 0.95, 0.7), HORIZONTAL_ALIGNMENT_CENTER, true)
+			_text(msg, Vector2(size.x * 0.5, 150), 30, Color(1, 0.95, 0.7), HORIZONTAL_ALIGNMENT_CENTER, true)
 
 
 func _draw_topbar(st: SvState) -> void:
@@ -180,7 +171,7 @@ func _build_minimap_bg() -> void:
 				col = Color("#d2ad73")
 			if g.kind.get(c, "") == "tree":
 				col = Color("#3f7a35")
-			elif g.kind.get(c, "") in ["building", "base"]:
+			elif g.kind.get(c, "") in ["building", "base", "townwall"]:
 				col = Color("#9fb0c2")
 			_mini_bg.set_pixel(i, j, col)
 	_mini_tex = ImageTexture.create_from_image(_mini_bg)
@@ -188,8 +179,9 @@ func _build_minimap_bg() -> void:
 
 func _draw_minimap(st: SvState) -> void:
 	var sz := SvData.map_size()
-	var w := 330.0
-	var h := w * sz.y / sz.x
+	var h := 300.0
+	var w := h * sz.x / sz.y
+
 	var r := Rect2(Vector2(size.x - w - 16, 84), Vector2(w, h))
 	draw_rect(r.grow(4), Color(0, 0, 0, 0.55))
 	draw_texture_rect(_mini_tex, r, false)
@@ -271,7 +263,7 @@ func _draw_lineup() -> void:
 	var fw := minf(size.x * 0.28, 540.0)
 	var fh := size.y - 230.0
 	var gap := (size.x - fw * 3) / 4.0
-	var roads: Array = SvData.roads()
+	var roads: Array = SvData.zones()
 	for i in 3:
 		var r := Rect2(Vector2(gap + i * (fw + gap), 190), Vector2(fw, fh))
 		var role: String = "%s 담당" % roads[i % roads.size()]["name"]
@@ -353,3 +345,40 @@ func _text(t: String, pos: Vector2, fs: int, col: Color, align := HORIZONTAL_ALI
 	if outline:
 		draw_string_outline(font, p, t, HORIZONTAL_ALIGNMENT_LEFT, -1, fs, maxi(3, fs / 9), Color(0, 0, 0, 0.75 * col.a))
 	draw_string(font, p, t, HORIZONTAL_ALIGNMENT_LEFT, -1, fs, col)
+
+
+func _draw_dialog(s: SvSession) -> void:
+	## 말풍선 대신 화면 아래 대화창: 최근 보고 3개 (초상화 + 이름 + 말). 오래된 것은 흐려짐
+	var recent: Array = []
+	for i in range(s.bubble_log.size() - 1, -1, -1):
+		var b: Dictionary = s.bubble_log[i]
+		if s.state.time - float(b["start"]) > 9.0:
+			break
+		recent.push_front(b)
+		if recent.size() >= 3:
+			break
+	if recent.is_empty():
+		return
+	var row_h := 62.0
+	var w := minf(size.x * 0.56, 1000.0)
+	var box := Rect2(Vector2(16, size.y - 16 - row_h * recent.size() - 16), Vector2(w, row_h * recent.size() + 16))
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color(0.06, 0.08, 0.12, 0.78)
+	sb.border_color = Color(1, 0.85, 0.3, 0.6)
+	sb.set_border_width_all(2)
+	sb.set_corner_radius_all(12)
+	draw_style_box(sb, box)
+	for i in recent.size():
+		var b: Dictionary = recent[i]
+		var age := s.state.time - float(b["start"])
+		var a := clampf(1.0 - (age - 5.0) / 4.0, 0.35, 1.0)
+		var h: SvState.SvHero = s.state.heroes[b["hero"]]
+		var y := box.position.y + 8 + i * row_h
+		var face := Rect2(Vector2(box.position.x + 10, y), Vector2(row_h - 8, row_h - 8))
+		if h.type in ["PLAYER", "BUILDER"] or not HeroPortrait.draw(self, h.type, face, "head", a):
+			SvFace.silhouette(self, h.type, face, "head", a)
+		var who := "나" if h.role == "player" else SvData.person(h.type)
+		var col := Color.from_string(str(SvData.hero(h.type).get("color", "#fff")), Color.WHITE).lightened(0.35)
+		_text(who, Vector2(face.end.x + 12, y + 24), 22, Color(col.r, col.g, col.b, a))
+		var newest := i == recent.size() - 1
+		_text(str(b["text"]), Vector2(face.end.x + 12, y + 50), 26 if newest else 23, Color(1, 1, 1, a))

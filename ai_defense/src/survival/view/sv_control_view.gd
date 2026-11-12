@@ -240,7 +240,7 @@ func _card(t: String) -> Control:
 	v.add_child(UiStyle.label(GameData.person(t), 34, UiStyle.C_ACCENT if idx >= 0 else UiStyle.C_TEXT, HORIZONTAL_ALIGNMENT_LEFT, false))
 	v.add_child(UiStyle.label("%s · 필살기 %s" % [d["name"], SvData.ult(t).get("name", "")], 21, UiStyle.C_SUB))
 	if idx >= 0:
-		v.add_child(UiStyle.label("✔ %s 담당" % SvData.roads()[idx % SvData.roads().size()]["name"], 24, UiStyle.C_ACCENT, HORIZONTAL_ALIGNMENT_LEFT, false))
+		v.add_child(UiStyle.label("✔ %s 담당" % SvData.zones()[idx % SvData.zones().size()]["name"], 24, UiStyle.C_ACCENT, HORIZONTAL_ALIGNMENT_LEFT, false))
 	h.add_child(v)
 	b.add_child(h)
 	return b
@@ -384,7 +384,7 @@ func _companion_card(h: SvState.SvHero) -> Control:
 	var parts := _card_button(h, func(): _send("open_principle", {"hero": hid}), _hcol(h.type))
 	var info: VBoxContainer = parts[1]
 	info.add_child(UiStyle.label(SvData.person(h.type), 36, UiStyle.C_TEXT, HORIZONTAL_ALIGNMENT_LEFT, false))
-	info.add_child(UiStyle.label("%s · %s 담당" % [GameData.hero(h.type)["name"], SvData.road(h.zone)["name"]], 21, UiStyle.C_SUB))
+	info.add_child(UiStyle.label("%s · %s 담당" % [GameData.hero(h.type)["name"], SvData.zone(h.zone)["name"]], 21, UiStyle.C_SUB))
 	var bar := _bar(Color("#4cd37a"))
 	bar.max_value = h.max_hp
 	info.add_child(bar)
@@ -454,7 +454,7 @@ func _build_principle() -> void:
 	col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	col.size_flags_stretch_ratio = 1.6
 	col.add_child(UiStyle.label(SvData.person(h.type), 64, UiStyle.C_TEXT, HORIZONTAL_ALIGNMENT_LEFT, false))
-	col.add_child(UiStyle.label("%s · %s 담당 · %s" % [GameData.hero(h.type)["name"], SvData.road(h.zone)["name"], h.status], 26, UiStyle.C_SUB))
+	col.add_child(UiStyle.label("%s · %s 담당 · %s" % [GameData.hero(h.type)["name"], SvData.zone(h.zone)["name"], h.status], 26, UiStyle.C_SUB))
 	for p in GameData.principle_order():
 		var w: Dictionary = GameData.config["principles"][p]
 		var b := Button.new()

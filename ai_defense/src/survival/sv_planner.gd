@@ -61,17 +61,22 @@ static func plan_wall(state: SvState, simplified: PackedVector2Array, shape_name
 				for e in state.enemies:
 					if e.alive and e.pos.distance_to(c) < 12.0 and g.flow_distance(e.pos) > fd:
 						upstream += 1
-				var s := road_cells * 1.0 + upstream * 0.6 - c.distance_to(origin) * 0.15
+				# 길을 가로지르는가: 벽 양 끝이 길 밖이면 길 폭 전체를 막는다 (길과 나란히 놓인 벽은 효과가 적음)
+				var ends_off := 0
+				for endp in [c + norm[0] * size_c, c + norm[norm.size() - 1] * size_c]:
+					if not g.is_road(g.cell_of(endp)):
+						ends_off += 1
+				var s := minf(road_cells, 5.0) + ends_off * 2.5 + upstream * 0.4 - c.distance_to(origin) * 0.4
 				if fd < 4.0:
 					s -= 3.0  # 마을 바로 앞은 우리 길도 막힘
-				cands.append({"center": c, "size": size_c, "cells": ok, "road_cells": road_cells, "upstream": upstream, "quick": s})
+				cands.append({"center": c, "size": size_c, "cells": ok, "road_cells": road_cells, "upstream": upstream, "ends_off": ends_off, "quick": s})
 	if cands.is_empty():
 		var why := "에너지가 부족해요 (지금 %d)" % state.energy if state.energy < min_cells * per else "근처 길 위에 이 모양을 세울 자리가 없어요. 길 가까이 가서 다시 그려 줘"
 		return {"ok": false, "reason": why}
 	cands.sort_custom(func(a, b): return a["quick"] > b["quick"])
 	var best: Dictionary = {}
 	var best_score := -INF
-	var base_path := g.path_length(origin, base + Vector2(0, -3.5))
+	var base_path := g.walk_steps(origin, base + Vector2(0, -3.5))
 	for cand in cands.slice(0, 4):
 		var gg := g.clone()
 		gg.add_wall(cand["cells"], 999, 1.0)
@@ -91,10 +96,10 @@ static func plan_wall(state: SvState, simplified: PackedVector2Array, shape_name
 		if road_id != "":
 			var gp := SvData.gate_pos(road_id)
 			gate_gain = maxf(0.0, gg.flow_distance(gp) - g.flow_distance(gp))
-		var ally_path := gg.path_length(origin, base + Vector2(0, -3.5))
+		var ally_path := gg.walk_steps(origin, base + Vector2(0, -3.5))
 		var ally_cut := ally_path >= SvGrid.INF_D
 		var ally_extra := 0.0 if ally_cut or base_path >= SvGrid.INF_D else maxf(0.0, ally_path - base_path)
-		var score: float = cand["quick"] + detour * 0.15 + minf(gate_gain, 40.0) * 0.12 - ally_extra * 0.2 - (25.0 if ally_cut else 0.0)
+		var score: float = cand["quick"] + detour * 0.15 + minf(gate_gain, 40.0) * 0.5 - ally_extra * 0.2 - (25.0 if ally_cut else 0.0)
 		if score > best_score:
 			best_score = score
 			best = cand.duplicate()
@@ -106,9 +111,9 @@ static func plan_wall(state: SvState, simplified: PackedVector2Array, shape_name
 			best["road"] = road_id
 	var pros: Array = []
 	var cons: Array = []
-	var road_name: String = SvData.road(best["road"])["name"] if best["road"] != "" else "길"
-	if best["road_cells"] > 0:
-		pros.append("%s을 막아서 적이 돌아가거나 벽을 부숴야 해요" % road_name if not road_name.ends_with("길") else "%s을 막아서 적이 돌아가거나 벽을 부숴야 해요" % road_name)
+	var road_name: String = str(SvData.zone_at(best["center"]).get("name", "길"))
+	if best["road_cells"] > 0 and best["gate_gain"] > 1.0:
+		pros.append("%s을 막아서 적 무리가 돌아가거나 벽을 부숴야 해요" % road_name)
 	if best["gate_gain"] > 1.0:
 		pros.append("그 길로 오는 적이 마을까지 가는 데 더 오래 걸려요 (계산상 이동 비용 +%d)" % int(best["gate_gain"]))
 	if best["affected"] > 0:

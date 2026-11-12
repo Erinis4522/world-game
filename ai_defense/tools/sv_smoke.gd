@@ -129,6 +129,29 @@ func _process(delta: float) -> bool:
 		11:
 			if t > 0.35:
 				_shot("ult_effect")
+				# 적 무리가 가장 많은 곳으로 '나'를 옮겨 광역 전투 장면을 찍는다
+				var st: SvState = c.session.state
+				var best := Vector2.ZERO
+				var bn := -1
+				for e in st.enemies:
+					var n := SvAI.count_near(st, e.pos, 4.0)
+					if e.alive and n > bn:
+						bn = n
+						best = e.pos
+				if bn > 0:
+					st.player().pos = st.grid.center_of(st.grid.nearest_open(st.grid.cell_of(best + Vector2(0, 1.2))))
+					st.player().prev_pos = st.player().pos
+				Engine.time_scale = 1.0
+				stage = 20
+				t = 0.0
+		20:
+			if t > 1.2:
+				_shot("horde_fight_a")
+				stage = 21
+				t = 0.0
+		21:
+			if t > 0.7:
+				_shot("horde_fight_b")
 				Engine.time_scale = 6.0
 				stage = 12
 		12:

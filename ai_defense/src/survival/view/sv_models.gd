@@ -5,7 +5,7 @@ extends RefCounted
 ## 캐릭터 파일에는 무기가 전부 붙어 있으므로 직업별로 하나만 보이게 하고, 옷 색으로 구분한다.
 
 const KAY := "res://assets/3d/kaykit/"
-const CHAR_SCALE := 0.6  # KayKit 캐릭터 키 약 2.5 → 1.5m
+const CHAR_SCALE := 0.44  # KayKit 캐릭터 키 약 2.5 → 1.1m (적 무리가 잘 보이게 작게)
 
 # 역할 → [모델 파일, 보일 무기들, 공격 애니메이션, 필살기 애니메이션]
 const HERO_LOOK := {
@@ -153,8 +153,8 @@ static func hero_unit(type: String) -> Unit:
 	var look: Array = HERO_LOOK.get(type, HERO_LOOK["PLAYER"])
 	var ps := scene(KAY + str(look[0]) + ".glb")
 	var col := Color.from_string(str(SvData.hero(type).get("color", "#ffffff")), Color.WHITE)
-	shadow(u.root, 0.45)
-	var r := ring(0.62, col if type != "PLAYER" else c("#ffd84a"), 0.1 if type == "PLAYER" else 0.06)
+	shadow(u.root, 0.34)
+	var r := ring(0.46, col if type != "PLAYER" else c("#ffd84a"), 0.09 if type == "PLAYER" else 0.06)
 	r.name = "Ring"
 	u.root.add_child(r)
 	if ps == null:

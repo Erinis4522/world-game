@@ -87,3 +87,35 @@ static func ult(type: String) -> Dictionary:
 
 static func speech_text(code: String) -> Array:
 	return cfg.get("speech", {}).get(code, [])
+
+
+static func zones() -> Array:
+	return cfg["map"].get("zones", [])
+
+
+static func zone(id: String) -> Dictionary:
+	for z in zones():
+		if z["id"] == id:
+			return z
+	return zones()[0] if not zones().is_empty() else {"id": "", "name": "길", "guard": [0, 0]}
+
+
+static func zone_guard(id: String) -> Vector2:
+	var g: Array = zone(id)["guard"]
+	return Vector2(float(g[0]), float(g[1]))
+
+
+static func zone_at(p: Vector2) -> Dictionary:
+	## 가장 가까운 구간 (윗길 / 가운데 길 / 아랫길)
+	var best: Dictionary = {}
+	var bd := INF
+	for z in zones():
+		var d := p.distance_to(Vector2(float(z["guard"][0]), float(z["guard"][1])))
+		if d < bd:
+			bd = d
+			best = z
+	return best
+
+
+static func aoe(type: String) -> Dictionary:
+	return cfg.get("aoe", {}).get(type, {})

@@ -116,7 +116,7 @@ static func _think_companion(state: SvState, h: SvState.SvHero) -> void:
 		_set_goal(state, h, base + Vector2(0, -4.0).rotated(h.id * 1.3))
 		h.status = "후퇴 중"
 		return
-	var guard := SvState._v(SvData.road(h.zone)["guard"])
+	var guard := SvData.zone_guard(h.zone)
 	var zr := float(cc.get("zone_radius", 9.0))
 	var help := float(cc.get("help_radius", 16.0))
 	var target: SvState.SvEnemy = null
@@ -129,7 +129,7 @@ static func _think_companion(state: SvState, h: SvState.SvHero) -> void:
 		if dg > zr and dh > help:
 			continue
 		var u: float = 0.6 * danger(state, e) + 0.4 * clampf(1.0 - dh / 16.0, 0.0, 1.0)
-		if state.grid.road_of(e.pos) == h.zone:
+		if str(SvData.zone_at(e.pos).get("id", "")) == h.zone:
 			u += 0.25  # 내가 맡은 길의 적부터
 		if dg > zr:
 			u -= 0.15  # 구역 밖이면 정말 위험할 때만
@@ -141,11 +141,11 @@ static func _think_companion(state: SvState, h: SvState.SvHero) -> void:
 		if away.length() < 0.01:
 			away = Vector2(1, 0)
 		_set_goal(state, h, target.pos + away.normalized() * rng * float(cc.get("engage_fraction", 0.8)))
-		h.status = "%s 지키는 중" % SvData.road(h.zone)["name"] if target.pos.distance_to(guard) <= zr else "도우러 가는 중"
+		h.status = "%s 지키는 중" % SvData.zone(h.zone)["name"] if target.pos.distance_to(guard) <= zr else "도우러 가는 중"
 		return
 	if h.pos.distance_to(guard) > 1.5:
 		_set_goal(state, h, guard)
-	h.status = "%s 지키는 중" % SvData.road(h.zone)["name"]
+	h.status = "%s 지키는 중" % SvData.zone(h.zone)["name"]
 
 
 static func _set_goal(state: SvState, h: SvState.SvHero, g: Vector2) -> void:

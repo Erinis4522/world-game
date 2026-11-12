@@ -196,90 +196,89 @@ static func _heroes_attack(state: SvState, dt: float) -> void:
 
 
 static func _attack(state: SvState, h: SvState.SvHero, target: SvState.SvEnemy, d: Dictionary) -> void:
+	## 모든 공격은 광역: 표적 주변을 함께 쓸어 낸다 (data/survival.json의 aoe). 직업 고유 효과는 맞은 적 모두에게.
 	h.target_id = target.id
 	h.last_attack_time = state.time
 	h.attacks += 1
 	if target.pos.distance_to(h.pos) > 0.01 and not (h.role == "player" and h.joy.length() > 0.08):
 		h.facing = (target.pos - h.pos).normalized()
 	var dmg := float(d.get("damage", 5))
-	var rng := SvAI.hero_range(h)
-	var hit_ids: Array = [target.id]
+	var ao: Dictionary = SvData.aoe(h.type)
+	var splash := float(ao.get("splash", 0.0))
+	var mult := float(ao.get("mult", 1.0))
+	var hit_ids: Array = []
 	var points: Array = [target.pos]
+	var center := target.pos
 	match h.type:
-		"SWORD":
-			damage(state, target, dmg, 0.0, h.id)
-			var others: Array = []
-			for e in state.enemies:
-				if e.alive and e.id != target.id and h.pos.distance_to(e.pos) <= rng:
-					others.append(e)
-			others.sort_custom(func(a, b): return a.pos.distance_to(target.pos) < b.pos.distance_to(target.pos))
-			for i in mini(int(d.get("max_targets", 2)) - 1, others.size()):
-				damage(state, others[i], dmg, 0.0, h.id)
-				hit_ids.append(others[i].id)
-				points.append(others[i].pos)
 		"SNIPER":
-			damage(state, target, dmg, float(d.get("armor_pierce", 0.5)), h.id)
-		"FIRE":
-			var r := float(d.get("aoe_radius", 0.9))
+			# 일직선 관통: 나 → 표적 방향으로 사거리 끝까지
+			var dir := (target.pos - h.pos).normalized()
+			var b := h.pos + dir * SvAI.hero_range(h)
+			var wdt := float(ao.get("pierce_width", 0.7))
 			for e in state.enemies:
-				if e.alive and e.pos.distance_to(target.pos) <= r:
-					damage(state, e, dmg, 0.0, h.id)
-					if e.alive:
-						e.burn_t = float(d.get("burn_duration", 3.0))
-						e.burn_dps = float(d.get("burn_dps", 2.0))
-						e.burn_src = h.id
-					if e.id != target.id:
-						hit_ids.append(e.id)
-			state.events.append({"type": "EXPLODE", "hero": h.id, "pos": target.pos, "radius": r, "kind": "FIRE"})
-		"ICE":
-			damage(state, target, dmg, 0.0, h.id)
-			if target.alive:
-				target.slow_t = float(d.get("slow_duration", 1.8))
-				target.slow_amt = float(d.get("slow", 0.35))
+				if e.alive and Geometry2D.get_closest_point_to_segment(e.pos, h.pos, b).distance_to(e.pos) <= wdt:
+					damage(state, e, dmg * (1.0 if e.id == target.id else mult), float(d.get("armor_pierce", 0.5)), h.id)
+					hit_ids.append(e.id)
+			points = [b]
 		"LIGHTNING":
 			damage(state, target, dmg, 0.0, h.id)
+			hit_ids.append(target.id)
 			var last := target.pos
 			var cur := dmg
-			var chained := 0
-			for i in int(d.get("chain_count", 2)):
+			for i in int(ao.get("chain", d.get("chain_count", 2))):
 				var nxt: SvState.SvEnemy = null
 				var best := INF
 				for e in state.enemies:
 					if not e.alive or hit_ids.has(e.id):
 						continue
 					var dd: float = e.pos.distance_to(last)
-					if dd <= float(d.get("chain_range", 1.6)) and dd < best:
+					if dd <= float(d.get("chain_range", 1.6)) * 1.4 and dd < best:
 						best = dd
 						nxt = e
 				if nxt == null:
 					break
-				cur *= float(d.get("chain_falloff", 0.7))
+				cur *= float(d.get("chain_falloff", 0.7)) * 1.15
 				hit_ids.append(nxt.id)
 				points.append(nxt.pos)
 				last = nxt.pos
 				damage(state, nxt, cur, 0.0, h.id)
-				chained += 1
-			h.last_chain_count = chained
+			h.last_chain_count = hit_ids.size() - 1
 		"BOMB":
 			var p := SvState.SvProjectile.new()
 			p.hero_id = h.id
 			p.pos = h.pos
 			p.prev_pos = h.pos
 			p.target = target.pos
-			p.speed = float(d.get("projectile_speed", 7.0))
+			p.speed = float(d.get("projectile_speed", 7.0)) * 1.4
 			p.damage = dmg
-			p.radius = float(d.get("blast_radius", 1.2))
+			p.radius = splash if splash > 0.0 else float(d.get("blast_radius", 1.2))
 			state.projectiles.append(p)
-		"MARK":
-			damage(state, target, dmg, 0.0, h.id)
-			if target.alive:
-				target.mark_t = float(d.get("mark_duration", 2.5))
-				target.mark_amt = float(d.get("mark_amp", 0.25))
-				target.mark_src = h.id
 		_:
-			damage(state, target, dmg, 0.0, h.id)
+			for e in state.enemies:
+				if not e.alive:
+					continue
+				var is_main: bool = e.id == target.id
+				if not is_main and (splash <= 0.0 or e.pos.distance_to(center) > splash):
+					continue
+				damage(state, e, dmg * (1.0 if is_main else mult), 0.0, h.id)
+				hit_ids.append(e.id)
+				if not e.alive:
+					continue
+				match h.type:
+					"FIRE":
+						e.burn_t = float(d.get("burn_duration", 3.0))
+						e.burn_dps = float(d.get("burn_dps", 2.0))
+						e.burn_src = h.id
+					"ICE":
+						e.slow_t = float(d.get("slow_duration", 1.8))
+						e.slow_amt = float(d.get("slow", 0.35))
+					"MARK":
+						e.mark_t = float(d.get("mark_duration", 2.5))
+						e.mark_amt = float(d.get("mark_amp", 0.25))
+						e.mark_src = h.id
 	state.events.append({"type": "ATTACK", "hero": h.id, "hero_type": h.type, "target": target.id,
-		"targets": hit_ids, "points": points, "from": h.pos})
+		"targets": hit_ids, "points": points, "from": h.pos, "center": center, "fx": str(ao.get("fx", "shot")),
+		"radius": splash, "hits": hit_ids.size()})
 
 
 static func _projectiles(state: SvState, dt: float) -> void:

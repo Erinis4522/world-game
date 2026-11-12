@@ -167,24 +167,23 @@ func triggers(pure := false) -> Array:
 			near_base += 1
 	if near_base >= 2:
 		out.append({"code": "BASE_THREAT", "hero": _nearest_hero(base), "prio": 5, "params": {"n": near_base}})
-	# 길별 적 수
+	# 구간(윗길·가운데 길·아랫길)별 적 수
 	var by_road: Dictionary = {}
 	for e in s.enemies:
 		if e.alive:
-			var rid := s.grid.road_of(e.pos)
+			var rid := str(SvData.zone_at(e.pos).get("id", ""))
 			if rid != "":
 				by_road[rid] = int(by_road.get(rid, 0)) + 1
 	for rid in by_road.keys():
-		var rn: String = SvData.road(rid)["name"]
+		var rn: String = SvData.zone(rid)["name"]
 		var speaker := _zone_hero(rid)
-		if int(by_road[rid]) >= 4 and (pure or s.time - float(_road_last.get(rid, -100.0)) > 20.0):
+		if int(by_road[rid]) >= 8 and (pure or s.time - float(_road_last.get(rid, -100.0)) > 20.0):
 			out.append({"code": "SIDE_RUSH", "hero": speaker, "prio": 4, "params": {"road": rn, "road_id": rid}})
 		var walled := false
-		for wl in s.walls:
-			for c in wl["cells"]:
-				if s.grid.is_wall(c) and s.grid.road_of(s.grid.center_of(c)) == rid:
-					walled = true
-		if int(by_road[rid]) >= 5 and not walled and s.energy >= int(SvData.sec("build", "min_cells", 3)) \
+		for c in s.grid.walls.keys():
+			if str(SvData.zone_at(s.grid.center_of(c)).get("id", "")) == rid:
+				walled = true
+		if int(by_road[rid]) >= 10 and not walled and s.energy >= int(SvData.sec("build", "min_cells", 3)) \
 				and (pure or s.time - float(_wish_last.get(rid, -100.0)) > 30.0):
 			out.append({"code": "WALL_WISH", "hero": speaker, "prio": 3, "params": {"road": rn, "road_id": rid}})
 	# 빠른 적이 아무도 막지 않은 채 마을 근처
@@ -210,7 +209,7 @@ func triggers(pure := false) -> Array:
 			_retreat_seen[h.id] = h.status == "후퇴 중"
 	for ev in _recent:
 		if ev["type"] == "SPAWN" and (ev["enemy_type"] == "ARMORED" or ev["enemy_type"] == "BOSS") and s.time - float(ev["time"]) <= 2.0:
-			out.append({"code": "STRONG_COMING", "hero": _zone_hero(ev["gate"]), "prio": 3, "params": {}})
+			out.append({"code": "STRONG_COMING", "hero": _zone_hero("Z1"), "prio": 3, "params": {}})
 			break
 	for ev in _recent:
 		if ev["type"] == "WALL_HIT" and s.time - float(ev["time"]) <= 1.0:
@@ -265,7 +264,7 @@ func _zone_hero(road_id: String) -> int:
 	for h in state.heroes:
 		if h.role == "companion" and h.zone == road_id and h.alive():
 			return h.id
-	return _nearest_hero(SvData.gate_pos(road_id))
+	return _nearest_hero(SvData.zone_guard(road_id))
 
 
 func _nearest_hero(p: Vector2) -> int:

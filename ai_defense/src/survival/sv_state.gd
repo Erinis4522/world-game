@@ -149,7 +149,7 @@ static func create(team: Array) -> SvState:
 	var roles: Array = [["PLAYER", "player"], ["BUILDER", "builder"]]
 	for t in team:
 		roles.append([t, "companion"])
-	var roads: Array = SvData.roads()
+	var roads: Array = SvData.zones()
 	for i in roles.size():
 		var h := SvHero.new()
 		h.id = i
