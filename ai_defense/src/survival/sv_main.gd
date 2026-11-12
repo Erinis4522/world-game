@@ -212,8 +212,8 @@ func _process(delta: float) -> void:
 		controller.command("start")
 		controller.command("recommended")
 		controller.command("battle_start")
-	if controller.phase == SvController.BATTLE and controller.session != null and controller.session.commands.is_empty():
-		controller.command("move_to", {"x": 9.0, "y": 9.0})
+	if controller.phase == SvController.BATTLE and controller.session != null and controller.session.state.time < 6.0:
+		controller.command("joy", {"x": -0.7, "y": -0.7})
 	if _selfcheck_t > 14.0:
 		DirAccess.make_dir_recursive_absolute(selfcheck_dir)
 		get_window().get_texture().get_image().save_png(selfcheck_dir.path_join("selfcheck_arena.png"))

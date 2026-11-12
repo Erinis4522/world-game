@@ -8,7 +8,6 @@ var t := 0.0
 var stage := 0
 var shots := 0
 var _seq := 5000
-var _next_move := 0.0
 var _bubble_shot := false
 
 
@@ -23,11 +22,12 @@ func _initialize() -> void:
 	root.add_child(main)
 
 
-func _cmd(n: String, a: Dictionary = {}) -> void:
+func _cmd(n: String, a: Dictionary = {}) -> Dictionary:
 	_seq += 1
 	var ack: Dictionary = main.controller.command(n, a, _seq)
-	if not ack["ok"]:
-		print("명령 실패: ", n, " ", a)
+	if not ack["ok"] and n != "joy":
+		print("명령 실패: ", n)
+	return ack
 
 
 func _shot(tag: String) -> void:
@@ -35,6 +35,13 @@ func _shot(tag: String) -> void:
 	root.get_texture().get_image().save_png(out_dir.path_join("%02d_%s_monitor.png" % [shots, tag]))
 	main.control_window.get_texture().get_image().save_png(out_dir.path_join("%02d_%s_touch.png" % [shots, tag]))
 	print("shot ", tag)
+
+
+func _stroke(kind: String) -> Array:
+	var out: Array = []
+	for p in load("res://tools/sv_sim.gd").stroke(kind):
+		out.append([p.x + 300.0, p.y + 300.0])
+	return out
 
 
 func _process(delta: float) -> bool:
@@ -45,73 +52,94 @@ func _process(delta: float) -> bool:
 			if t > 0.4:
 				main.control_window.size = Vector2i(1280, 720)
 				root.size = Vector2i(1280, 720)
-			if t > 1.2:
+			if t > 1.5:
 				_shot("attract")
 				_cmd("start")
 				stage = 1
 		1:
-			if t > 1.8 and main.control_view._focus == "":
-				main.control_view._focus = "LIGHTNING"
-			if t > 2.6:
+			if t > 2.0 and main.control_view._focus == "":
+				main.control_view._focus = "ICE"
+			if t > 2.8:
 				_shot("select_detail")
-				_cmd("confirm_hero", {"type": "LIGHTNING"})
 				main.control_view._focus = ""
 				main.control_view._focus_shown = ""
-				_cmd("confirm_hero", {"type": "SWORD"})
-				_cmd("confirm_hero", {"type": "BOMB"})
+				_cmd("confirm_hero", {"type": "ICE"})
+				_cmd("confirm_hero", {"type": "FIRE"})
+				_cmd("confirm_hero", {"type": "SNIPER"})
 				stage = 2
 		2:
-			if t > 3.6:
+			if t > 3.8:
 				_shot("select_team")
 				_cmd("battle_start")
 				stage = 3
 		3:
-			if t > 4.6:
-				_shot("intro")
-				stage = 4
-		4:
 			if c.phase == SvController.BATTLE:
-				Engine.time_scale = 2.0
-				# 학생 대신: 2초마다 기지에 가장 가까운 적 쪽으로 이동
-				var st := c.session.state
-				if st.time >= _next_move:
-					_next_move = st.time + 2.0
-					var best: SvState.SvEnemy = null
-					var bd := INF
-					for e in st.enemies:
-						if e.alive and e.pos.distance_to(SvData.base_center()) < bd:
-							bd = e.pos.distance_to(SvData.base_center())
-							best = e
-					if best != null:
-						_cmd("move_to", {"x": best.pos.x, "y": best.pos.y})
-				if not _bubble_shot and not c.session.bubbles.is_empty() and st.time > 15:
-					_bubble_shot = true
-					_shot("battle_bubble")
-				if st.time > 30 and stage == 4:
-					main.control_view._open_hero = 1
-					stage = 5
-					t = 0.0
+				_cmd("joy", {"x": -0.8, "y": -0.6})
+				stage = 4
+				t = 0.0
+		4:
+			if t > 4.0:
+				_cmd("joy", {"x": 0.0, "y": 0.0})
+				_shot("battle_start")
+				_cmd("open_principle", {"hero": 2})
+				stage = 5
+				t = 0.0
 		5:
-			if t > 0.6:
-				_shot("tactic_menu")
-				_cmd("set_tactic", {"hero": 1, "tactic": "DEFEND"})
-				main.control_view._open_hero = -1
+			if t > 0.8:
+				_shot("principle_slowmo")
+				_cmd("set_principle", {"hero": 2, "principle": "SPECIAL"})
 				stage = 6
+				t = 0.0
 		6:
-			var st2 := c.session.state if c.session != null else null
-			if st2 != null and st2.time > 70 and stage == 6:
-				_shot("battle_70s")
-				Engine.time_scale = 6.0
+			if t > 6.0:
+				_cmd("open_sketch")
+				_cmd("submit_sketch", {"points": _stroke("LINE")})
 				stage = 7
+				t = 0.0
 		7:
-			if c.phase == SvController.RESULT:
-				Engine.time_scale = 1.0
+			if t > 0.8:
+				_shot("sketch_wall_proposal")
+				var pr: Dictionary = c.session.proposal
+				print("벽 제안: ok=", pr.get("ok"), " ", pr.get("shape", ""), " ", pr.get("cells", []).size(), "칸 ", pr.get("road_name", ""), " / ", pr.get("reason", ""))
+				_cmd("accept_proposal")
 				stage = 8
 				t = 0.0
 		8:
+			if t > 1.2:
+				_shot("wall_built")
+				Engine.time_scale = 2.0
+				stage = 9
+				t = 0.0
+		9:
+			if c.session.state.energy >= 8 and c.session.state.time > 40:
+				Engine.time_scale = 1.0
+				_cmd("open_sketch")
+				_cmd("submit_sketch", {"points": _stroke("CIRCLE")})
+				stage = 10
+				t = 0.0
+			elif not _bubble_shot and not c.session.bubbles.is_empty() and c.session.state.time > 25:
+				_bubble_shot = true
+				_shot("bubble")
+		10:
+			if t > 0.8:
+				_shot("sketch_ult_proposal")
+				_cmd("accept_proposal")
+				stage = 11
+				t = 0.0
+		11:
+			if t > 0.35:
+				_shot("ult_effect")
+				Engine.time_scale = 6.0
+				stage = 12
+		12:
+			if c.phase == SvController.RESULT:
+				Engine.time_scale = 1.0
+				stage = 13
+				t = 0.0
+		13:
 			if t > 1.0:
 				_shot("result")
 				var r: Dictionary = c.result
-				print("RESULT ", r["outcome"], " base=", r["base_hp"], " kills=", r["kills"], " moves=", r["moves"], " tactic_changes=", r["tactic_changes"])
+				print("RESULT ", r["outcome"], " base=", r["base_hp"], " kills=", r["kills"], " walls=", r["walls"], " cmds=", r["commands"])
 				return true
-	return t > 600.0
+	return t > 900.0

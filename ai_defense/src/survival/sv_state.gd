@@ -1,37 +1,41 @@
 class_name SvState
 extends RefCounted
-## 3D 서바이벌 한 판의 상태. 좌표는 평면 격자 단위 (x = 오른쪽, y = 아래쪽 → 3D에서는 x, z).
-## clone()은 깊은 복사 (AI 비교 계산·테스트용).
+## 3D 서바이벌 한 판의 상태. 좌표는 평면 격자 단위 (x = 오른쪽, y = 아래쪽 → 3D x, z).
+## 아군: 0 = 나(PLAYER, 조이스틱), 1 = 건설 동료(BUILDER, 늘 내 옆), 2~4 = 고른 동료 3명(맵에 흩어져 자율 전투)
+
+const PLAYER := 0
+const BUILDER := 1
 
 
 class SvHero:
 	extends RefCounted
 	var id := 0
 	var type := "SWORD"
-	var is_player := false
+	var role := "companion"  # player / builder / companion
 	var pos := Vector2.ZERO
 	var prev_pos := Vector2.ZERO
 	var facing := Vector2(0, 1)
 	var hp := 100.0
 	var max_hp := 100.0
-	var down_t := 0.0  # > 0 이면 쓰러져서 기지에서 다시 일어나는 중
+	var down_t := 0.0
 	var cooldown := 0.0
 	var principle := "NEAREST"
+	var zone := ""  # 동료가 맡은 길 id
 	var target_id := -1
 	var last_attack_time := -100.0
 	var last_chain_count := -1
-	var goal := Vector2.INF  # 이동 목적지 (없으면 INF)
+	var goal := Vector2.INF
 	var path := PackedVector2Array()
 	var path_i := 0
-	var tactic := "GATHER"
-	var focus_id := -1
+	var joy := Vector2.ZERO  # 나: 조이스틱 방향 (길이 0~1)
 	var think_t := 0.0
-	var status := ""  # 화면 표시용 한 줄 (호위 중 / 후퇴 중 …)
+	var status := ""
 	var moving := false
+	var ult_ready_t := 0.0  # 이 시각 이후 필살기 가능
+	var building_until := -1.0
 	var attacks := 0
 	var kills := 0
 	var damage_dealt := 0.0
-	var damage_taken := 0.0
 	var downs := 0
 
 	func clone() -> SvHero:
@@ -57,7 +61,7 @@ class SvEnemy:
 	var radius := 0.3
 	var speed := 1.0
 	var alive := true
-	var target_hero := -1  # -1 = 기지로
+	var target_hero := -1
 	var atk_cd := 0.0
 	var spawn_time := 0.0
 	var first_hit_time := -1.0
@@ -71,6 +75,7 @@ class SvEnemy:
 	var mark_amt := 0.0
 	var mark_src := -1
 	var attacking := false
+	var hitting_wall := false
 
 	func clone() -> SvEnemy:
 		var c := SvEnemy.new()
@@ -116,9 +121,11 @@ var base_hp_max := 100.0
 var heroes: Array = []
 var enemies: Array = []
 var projectiles: Array = []
-var spawn_queue: Array = []  # [{t, type, gate}] 시간순
+var walls: Array = []  # [{id, cells, built_at}]
+var spawn_queue: Array = []
 var spawns_enabled := true
 var next_enemy_id := 1
+var next_wall_id := 1
 var kills := 0
 var xp := 0
 var energy := 0
@@ -129,37 +136,52 @@ var events: Array = []
 
 
 static func create(team: Array) -> SvState:
-	## team: 고른 순서의 캐릭터 종류 3개. 첫 번째가 학생이 직접 움직이는 대표 캐릭터.
+	## team: 고른 동료 3명. 나와 건설 동료는 항상 들어간다.
 	SvData.ensure_loaded()
 	var s := SvState.new()
 	s.grid = SvGrid.from_config()
 	s.duration = float(SvData.cfg.get("duration_seconds", 180))
 	s.base_hp = float(SvData.cfg.get("base_hp", 100))
 	s.base_hp_max = s.base_hp
-	var starts: Array = SvData.cfg["map"]["hero_start"]
+	s.energy = int(SvData.sec("build", "start_energy", 8))
 	var hcfg: Dictionary = SvData.cfg["hero"]
-	for i in team.size():
+	var starts: Dictionary = SvData.cfg["map"]["hero_start"]
+	var roles: Array = [["PLAYER", "player"], ["BUILDER", "builder"]]
+	for t in team:
+		roles.append([t, "companion"])
+	var roads: Array = SvData.roads()
+	for i in roles.size():
 		var h := SvHero.new()
 		h.id = i
-		h.type = team[i]
-		h.is_player = i == 0
-		var sp: Array = starts[i % starts.size()]
-		h.pos = Vector2(float(sp[0]), float(sp[1]))
-		h.prev_pos = h.pos
+		h.type = roles[i][0]
+		h.role = roles[i][1]
 		h.max_hp = float(hcfg.get("hp", 100))
 		h.hp = h.max_hp
-		h.tactic = str(SvData.cfg.get("default_tactic", "GATHER"))
 		h.principle = str(GameData.config.get("default_principle", "NEAREST"))
+		if h.role == "player":
+			h.pos = _v(starts["player"])
+		elif h.role == "builder":
+			h.pos = _v(starts["builder"])
+		else:
+			var r: Dictionary = roads[(i - 2) % roads.size()]
+			h.zone = r["id"]
+			h.pos = _v(r["guard"])
+		h.pos = s.grid.center_of(s.grid.nearest_open(s.grid.cell_of(h.pos))) if s.grid.is_blocked(s.grid.cell_of(h.pos)) else h.pos
+		h.prev_pos = h.pos
 		s.heroes.append(h)
+	var scale := float(SvData.cfg.get("spawn_count_scale", 1.0))
 	var q: Array = []
 	for g in SvData.cfg["spawns"]:
-		var cnt := int(round(float(g["count"]) * float(SvData.cfg.get("spawn_count_scale", 1.0))))
-		var iv := float(g["interval"]) / float(SvData.cfg.get("spawn_count_scale", 1.0))
+		var cnt := int(round(float(g["count"]) * scale))
 		for k in cnt:
-			q.append({"t": float(g["t"]) + iv * k, "type": g["type"], "gate": g["gate"]})
+			q.append({"t": float(g["t"]) + float(g["interval"]) / scale * k, "type": g["type"], "gate": g["gate"]})
 	q.sort_custom(func(a, b): return a["t"] < b["t"])
 	s.spawn_queue = q
 	return s
+
+
+static func _v(a: Array) -> Vector2:
+	return Vector2(float(a[0]), float(a[1]))
 
 
 func clone() -> SvState:
@@ -176,9 +198,11 @@ func clone() -> SvState:
 		c.enemies.append(e.clone())
 	for p in projectiles:
 		c.projectiles.append(p.clone())
+	c.walls = walls.duplicate(true)
 	c.spawn_queue = spawn_queue.duplicate(true)
 	c.spawns_enabled = spawns_enabled
 	c.next_enemy_id = next_enemy_id
+	c.next_wall_id = next_wall_id
 	c.kills = kills
 	c.xp = xp
 	c.energy = energy
@@ -189,7 +213,15 @@ func clone() -> SvState:
 
 
 func player() -> SvHero:
-	return heroes[0]
+	return heroes[PLAYER]
+
+
+func builder() -> SvHero:
+	return heroes[BUILDER]
+
+
+func companions() -> Array:
+	return heroes.slice(2)
 
 
 func find_enemy(id: int) -> SvEnemy:
@@ -199,20 +231,12 @@ func find_enemy(id: int) -> SvEnemy:
 	return null
 
 
-func alive_enemies() -> Array:
-	var out: Array = []
-	for e in enemies:
-		if e.alive:
-			out.append(e)
-	return out
-
-
 func time_left() -> float:
 	return maxf(0.0, duration - time)
 
 
 func signature() -> String:
-	var parts: Array = [str(tick), "%.3f" % base_hp, str(kills)]
+	var parts: Array = [str(tick), "%.3f" % base_hp, str(kills), str(energy), str(grid.walls.size())]
 	for h in heroes:
 		parts.append("%.3f,%.3f,%.2f" % [h.pos.x, h.pos.y, h.hp])
 	for e in enemies:

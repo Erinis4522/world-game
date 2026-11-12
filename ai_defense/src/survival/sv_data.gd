@@ -1,6 +1,7 @@
 class_name SvData
 extends RefCounted
-## 3D 서바이벌 모드 데이터 (data/survival.json). 캐릭터·적 기본 정보는 기존 GameData를 그대로 쓴다.
+## 3D 서바이벌 모드 데이터 (data/survival.json). 동료 8종 정보는 기존 GameData를 그대로 쓰고,
+## 이 모드에만 있는 '나(PLAYER)'와 '건설 동료(BUILDER)'는 special_heroes에서 읽는다.
 
 static var cfg: Dictionary = {}
 static var _loaded := false
@@ -28,23 +29,22 @@ static func sec(section: String, key: String, def: Variant = null) -> Variant:
 	return s.get(key, def) if s is Dictionary else def
 
 
+static func hero(type: String) -> Dictionary:
+	var sp: Dictionary = cfg.get("special_heroes", {})
+	if sp.has(type):
+		return sp[type]
+	return GameData.hero(type)
+
+
+static func person(type: String) -> String:
+	var d := hero(type)
+	return str(d.get("person", d.get("name", type)))
+
+
 static func enemy(type: String) -> Dictionary:
-	## 기존 적 데이터(체력·방어·반지름) + 서바이벌용 행동 데이터
 	var base: Dictionary = GameData.enemy(type).duplicate()
 	base.merge(cfg.get("enemies", {}).get(type, {}), true)
 	return base
-
-
-static func tactic_name(t: String) -> String:
-	return str(cfg.get("tactics", {}).get(t, {}).get("name", t))
-
-
-static func tactic_status(t: String) -> String:
-	return str(cfg.get("tactics", {}).get(t, {}).get("status", ""))
-
-
-static func tactic_order() -> Array:
-	return cfg.get("tactic_order", ["GATHER", "DEFEND", "FOCUS"])
 
 
 static func base_center() -> Vector2:
@@ -56,11 +56,33 @@ static func map_size() -> Vector2:
 	return Vector2(float(cfg["map"]["w"]), float(cfg["map"]["h"]))
 
 
-static func gate(id: String) -> Dictionary:
-	for g in cfg["map"]["gates"]:
-		if g["id"] == id:
-			return g
-	return cfg["map"]["gates"][0]
+static func roads() -> Array:
+	return cfg["map"]["roads"]
+
+
+static func road(id: String) -> Dictionary:
+	for r in roads():
+		if r["id"] == id:
+			return r
+	return roads()[0]
+
+
+static func road_points(r: Dictionary) -> PackedVector2Array:
+	var out := PackedVector2Array()
+	for p in r["points"]:
+		out.append(Vector2(float(p[0]), float(p[1])))
+	return out
+
+
+static func gate_pos(road_id: String) -> Vector2:
+	var pts := road_points(road(road_id))
+	var p := pts[0]
+	var inward := (pts[1] - pts[0]).normalized()
+	return p + inward * 0.8
+
+
+static func ult(type: String) -> Dictionary:
+	return cfg.get("ultimate", {}).get("defs", {}).get(type, {})
 
 
 static func speech_text(code: String) -> Array:
